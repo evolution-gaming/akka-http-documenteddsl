@@ -1,7 +1,7 @@
 import java.util.UUID
 
-import akka.http.documeneddsl.directives.DDirectives._
-import akka.http.documeneddsl.documentation.DocumentedTypeMappings
+import akka.http.documenteddsl.directives.DDirectives._
+import akka.http.documenteddsl.documentation.DocumentedTypeMappings
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.coursera.autoschema.AutoSchema

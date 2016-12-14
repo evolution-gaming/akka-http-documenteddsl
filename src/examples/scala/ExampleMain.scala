@@ -2,8 +2,8 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 
-import akka.http.documeneddsl.documentation._
-import akka.http.documeneddsl.documentation.DocumentationJson._
+import akka.http.documenteddsl.documentation._
+import akka.http.documenteddsl.documentation.DocumentationJson._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.stream.ActorMaterializer
 
