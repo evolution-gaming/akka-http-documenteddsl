@@ -25,7 +25,7 @@
 ### Introduction
  To use documented directives you need to import couple things.
 ```scala
-import akka.http.documenteddsl.directives.DDirectives._
+import akka.http.documenteddsl.DDirectives._
 ```
  This is an entry point to documented dsl.
  
