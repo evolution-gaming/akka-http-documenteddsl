@@ -41,6 +41,9 @@ import akka.http.documenteddsl.DDirectives._
    - OPTIONS
  - Path directives
    - Path
+ - Header directives
+   - Header
+   - OptHeader
  - Parameter directives
    - Param
    - OptParam
