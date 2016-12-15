@@ -1,5 +1,7 @@
 # AKKA-HTTP-DOCUMENTEDDSL
 
+[![Build Status](https://travis-ci.org/evolution-gaming/akka-http-documenteddsl.svg?branch=develop)](https://travis-ci.org/evolution-gaming/akka-http-documenteddsl)
+
 ## The Problem
  Want to provide [Swaggerrish](http://swagger.io/) api documentation of your app? Or [RAML](http://raml.org/)?
  
