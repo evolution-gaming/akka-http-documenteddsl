@@ -1,8 +1,7 @@
 package akka.http.documenteddsl.documentation
 
-import java.util.UUID
-
 import akka.http.documenteddsl.documentation.OutDocumentation._
+import akka.http.documenteddsl.util.UID
 import akka.http.scaladsl.model.{ContentTypes, StatusCode, Uri}
 import org.coursera.autoschema.AutoSchema
 import play.api.libs.json.JsValue
@@ -10,7 +9,7 @@ import play.api.libs.json.JsValue
 import scala.reflect.runtime.{universe => ru}
 
 case class RouteDocumentation(
-  uuid: UUID = UUID.randomUUID(),
+  uid: String = UID(),
   method: Option[String] = None,
   path: Option[String] = None,
   session: Option[SessionDocumentation] = None,

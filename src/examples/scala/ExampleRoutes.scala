@@ -24,11 +24,11 @@ object ExampleRoutes {
                         Path("resources") & POST &
                         In(CreateExample) & Out[ExampleResource]
   
-  private val Update  = Category("Api", "Resource") & Title("Create") & Description("Updates specified resource entry") &
+  private val Update  = Category("Api", "Resource") & Title("Update") & Description("Updates specified resource entry") &
                         Path("resources" / Segment[String]) & PUT &
                         In(UpdateExample) & Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
   
-  private val Delete  = Category("Api", "Resource") & Title("Create") & Description("Deletes specified resource entry") &
+  private val Delete  = Category("Api", "Resource") & Title("Delete") & Description("Deletes specified resource entry") &
                         Path("resources" / Segment[String]) & DELETE &
                         Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 

@@ -8,8 +8,8 @@ import Examples._
 lazy val project = (Project(artifactId, file("."))
   configs ExamplesConfig
   settings inConfig(ExamplesConfig)(compileBase ++ compileSettings ++ Seq(
-  run <<= Defaults.runTask(fullClasspath in ExamplesConfig, mainClass in run, runner in run),
-  runMain <<= Defaults.runMainTask(fullClasspath in ExamplesConfig, runner in run)))
+  run := Defaults.runTask(fullClasspath in ExamplesConfig, mainClass in run, runner in run).evaluated,
+  runMain := Defaults.runMainTask(fullClasspath in ExamplesConfig, runner in run).evaluated))
   settings buildSettings
   settings Seq(
     resolvers += Resolver.bintrayRepo("evolutiongaming", "maven"),

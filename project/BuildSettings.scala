@@ -4,12 +4,12 @@ import sbt.Keys._
 import bintray.BintrayPlugin.autoImport.bintrayOrganization
 
 object BuildSettings {
-  val artifactId = "akka-http-autodoc"
+  val artifactId = "akka-http-documenteddsl"
 
   lazy val buildSettings = Seq(
     name                  := artifactId,
     organization          := "com.evolutiongaming",
-    homepage              := Some(new URL("http://github.com/evolution-gaming/akka-http-autodoc")),
+    homepage              := Some(new URL("http://github.com/evolution-gaming/akka-http-documenteddsl")),
     startYear             := Some(2016),
     organizationName      := "Evolution Gaming",
     organizationHomepage  := Some(url("http://evolutiongaming.com")),

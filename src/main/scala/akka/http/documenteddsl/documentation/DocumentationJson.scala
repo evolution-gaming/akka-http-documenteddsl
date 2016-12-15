@@ -12,15 +12,15 @@ trait DocumentationJson {
     override def writes(o: Origin): JsValue = JsString(o.productPrefix.toLowerCase)
   }
 
-  implicit val sessionFormat: Format[SessionDocumentation]  = Json.format[SessionDocumentation]
-  implicit val statusFormat: Format[Status]                 = Json.format[Status]
-  implicit val successFormat: Format[Success]               = Json.format[Success]
-  implicit val errorFormat: Format[Failure]                 = Json.format[Failure]
-  implicit val outFormat: Format[OutDocumentation]          = Json.format[OutDocumentation]
-  implicit val inFormat: Format[InDocumentation]            = Json.format[InDocumentation]
-  implicit val paramDocFormat: Format[ParamDocumentation]   = Json.format[ParamDocumentation]
-  implicit val routeDocFormat: Format[RouteDocumentation]   = Json.format[RouteDocumentation]
-  implicit val docFormat: Format[Documentation]             = Json.format[Documentation]
+  implicit val sessionFormat: Format[SessionDocumentation]        = Json.format[SessionDocumentation]
+  implicit val statusFormat: Format[Status]                       = Json.format[Status]
+  implicit val successFormat: Format[Success]                     = Json.format[Success]
+  implicit val errorFormat: Format[Failure]                       = Json.format[Failure]
+  implicit val outFormat: Format[OutDocumentation]                = Json.format[OutDocumentation]
+  implicit val inFormat: Format[InDocumentation]                  = Json.format[InDocumentation]
+  implicit val paramDocFormat: Format[ParamDocumentation]         = Json.format[ParamDocumentation]
+  implicit val routeDocFormat: Format[RouteDocumentation]         = Json.format[RouteDocumentation]
+  implicit val docFormat: Format[Documentation]                   = Json.format[Documentation]
 }
 
 object DocumentationJson extends DocumentationJson
