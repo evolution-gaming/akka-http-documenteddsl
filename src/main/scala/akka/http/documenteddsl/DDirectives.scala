@@ -1,6 +1,6 @@
-package akka.http.documenteddsl.directives
+package akka.http.documenteddsl
 
-import akka.http.documenteddsl.DRouteConcatenation
+import akka.http.documenteddsl.directives._
 import akka.http.scaladsl.server.directives.RouteDirectives.{redirect => akkaRedirect}
 
 trait DDirectives
@@ -9,6 +9,7 @@ trait DDirectives
     with DocumentationDDirectives
     with MethodDDirectives
     with PathDDirectives
+    with HeaderDDirectives
     with MarshallingDDirectives
     with UnmarshallingDDirectives
     with ParameterDDirectives

@@ -1,6 +1,8 @@
 # AKKA-HTTP-DOCUMENTEDDSL
 
 [![Build Status](https://travis-ci.org/evolution-gaming/akka-http-documenteddsl.svg?branch=develop)](https://travis-ci.org/evolution-gaming/akka-http-documenteddsl)
+[![Coverage Status](https://coveralls.io/repos/evolution-gaming/akka-http-documenteddsl/badge.svg)](https://coveralls.io/r/evolution-gaming/akka-http-documenteddsl)
+[![version](https://api.bintray.com/packages/evolutiongaming/maven/akka-http-documenteddsl/images/download.svg) ](https://bintray.com/evolutiongaming/maven/akka-http-documenteddsl/_latestVersion)
 
 ## The Problem
  Want to provide [Swaggerrish](http://swagger.io/) api documentation of your app? Or [RAML](http://raml.org/)?

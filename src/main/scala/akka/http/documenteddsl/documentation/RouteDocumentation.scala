@@ -14,6 +14,7 @@ case class RouteDocumentation(
   path: Option[String] = None,
   session: Option[SessionDocumentation] = None,
   parameters: Option[List[ParamDocumentation]] = None,
+  headers: Option[List[HeaderDocumentation]] = None,
   in: Option[InDocumentation] = None,
   out: Option[OutDocumentation] = None,
   title: Option[String] = None,
@@ -69,6 +70,11 @@ case class RouteDocumentation(
     val updated   = out getOrElse OutDocumentation()
 
     copy(out = Some(updated :+ response))
+  }
+
+  def header(name: String, required: Boolean, constraints: Option[Set[String]]): RouteDocumentation = {
+    val header = HeaderDocumentation(name = name, required = required, constraints = constraints)
+    copy(headers = Some((headers getOrElse List.empty) :+ header))
   }
 
   def parameter[T : ru.TypeTag](name: String, required: Boolean, origin: ParamDocumentation.Origin)(implicit as: AutoSchema): RouteDocumentation = {

@@ -19,6 +19,7 @@ trait DocumentationJson {
   implicit val outFormat: Format[OutDocumentation]                = Json.format[OutDocumentation]
   implicit val inFormat: Format[InDocumentation]                  = Json.format[InDocumentation]
   implicit val paramDocFormat: Format[ParamDocumentation]         = Json.format[ParamDocumentation]
+  implicit val headerDocFormat: Format[HeaderDocumentation]       = Json.format[HeaderDocumentation]
   implicit val routeDocFormat: Format[RouteDocumentation]         = Json.format[RouteDocumentation]
   implicit val docFormat: Format[Documentation]                   = Json.format[Documentation]
 }

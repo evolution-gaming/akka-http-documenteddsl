@@ -1,6 +1,6 @@
 package akka.http.documenteddsl
 
-import akka.http.documenteddsl.directives.DDirectives._
+import DDirectives._
 import akka.http.documenteddsl.documentation.{JsonSchema, ParamDocumentation, RouteDocumentation}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.MustMatchers._

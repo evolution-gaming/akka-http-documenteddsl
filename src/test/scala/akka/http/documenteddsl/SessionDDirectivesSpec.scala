@@ -1,6 +1,6 @@
 package akka.http.documenteddsl
 
-import akka.http.documenteddsl.directives.DDirectives._
+import DDirectives._
 import akka.http.documenteddsl.documentation._
 import akka.http.javadsl.server.AuthorizationFailedRejection
 import akka.http.scaladsl.model.headers.Cookie
