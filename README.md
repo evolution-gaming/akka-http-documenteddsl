@@ -214,4 +214,11 @@ GET http://localhost:8080/api.json/14906C3B8B40240130BFA42E
 ### Known issues
  - Only Play Json supported now
  - Your payloads always treated as json payloads
- - Lack of ability to describe route hierarchically  
+ - Lack of ability to describe route hierarchically
+ 
+## Setup
+**Sbt**
+```scala
+resolvers += Resolver.bintrayRepo("evolutiongaming", "maven")
+libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "_latestVersion"
+```
