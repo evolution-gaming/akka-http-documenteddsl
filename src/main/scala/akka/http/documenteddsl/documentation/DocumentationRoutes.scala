@@ -3,7 +3,7 @@ package akka.http.documenteddsl.documentation
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.http.documenteddsl.documentation.DocumentationJson._
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
 
 object DocumentationRoutes {
   def apply(documentation: Documentation): Route = {

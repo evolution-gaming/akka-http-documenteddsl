@@ -11,7 +11,7 @@ import play.api.libs.json.{Format, Json}
 
 class MarshallingDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
   import MarshallingDDirectivesSpec._
-  import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+  import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
 
 
   "In" must {

@@ -3,7 +3,7 @@ import java.util.UUID
 import akka.http.documenteddsl.DDirectives._
 import akka.http.documenteddsl.documentation.DocumentedTypeMappings
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
 import org.coursera.autoschema.AutoSchema
 import play.api.libs.json.Json
 import ExampleResource._
