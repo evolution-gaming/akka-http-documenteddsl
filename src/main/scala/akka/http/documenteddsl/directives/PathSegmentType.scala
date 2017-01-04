@@ -9,7 +9,7 @@ import akka.http.scaladsl.server.{PathMatcher, PathMatcher1, PathMatchers}
 import scala.util.Try
 import scala.util.matching.Regex
 
-sealed trait PathSegmentType[T] {
+trait PathSegmentType[T] {
   def fromString: PathMatcher1[T]
 }
 
@@ -59,6 +59,14 @@ object PathSegmentType {
 
   case class RegexSegment(re: Regex) extends PathSegmentType[String] {
     override def fromString: PathMatcher1[String] = re
+  }
+
+  private class FromFunctionPathSegmentType[T](f: String => T) extends PathSegmentType[T] {
+    override def fromString: PathMatcher1[T] = PathMatchers.Segment flatMap {x => Try(f(x)).toOption}
+  }
+
+  implicit def function2pathSegmentType[T](implicit f: String => T): PathSegmentType[T] = {
+    new FromFunctionPathSegmentType[T](f)
   }
 
 }
