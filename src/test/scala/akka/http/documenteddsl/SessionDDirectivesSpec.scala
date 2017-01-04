@@ -14,19 +14,19 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
 
   "Session" must {
     "be applied to route documentation" in new CustomScope {
-      Session[UserSession].describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
+      Session[UserSession, Perm].describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
         `type` = "user",
         redirectUri = None,
         permissions = Set.empty))
     }
     "be applied to route documentation (with permissions)" in new CustomScope {
-      Session[UserSession](Read, Write).describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
+      Session[UserSession, Perm](Read, Write).describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
         `type` = "user",
         redirectUri = None,
         permissions = Set("read", "write")))
     }
     "be applied to route documentation (with redirection)" in new CustomScope {
-      (Session[UserSession] &> "/admin").describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
+      (Session[UserSession, Perm] &> "/admin").describe(RouteDocumentation()).session mustBe Some(SessionDocumentation(
         `type` = "user",
         redirectUri = Some("/admin"),
         permissions = Set.empty))
@@ -45,7 +45,7 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
     "be handled (generic impl). correct cookie and proper permissions - correct session" in new CorrectCookieProperPerms with GenericScope
 
     trait NoCookie { this: Scope =>
-      val route = Session[UserSession] apply {session => complete(session.id)}
+      val route = Session[UserSession, Perm] apply {session => complete(session.id)}
       Get("/") ~> route ~> check {
         handled mustBe false
         rejection mustNot be (null)
@@ -53,7 +53,7 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
     }
 
     trait WrongCookie { this: Scope =>
-      val route = Session[UserSession] apply {session => complete(session.id)}
+      val route = Session[UserSession, Perm] apply {session => complete(session.id)}
       Get("/") ~> addHeader(Cookie("session-id", "wrong")) ~> route ~> check {
         handled mustBe false
         rejection mustNot be (null)
@@ -61,7 +61,7 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
     }
 
     trait CorrectCookie { this: Scope =>
-      val route = Session[UserSession] apply {session => complete(s"${session.id}, ${session.userId}")}
+      val route = Session[UserSession, Perm] apply {session => complete(s"${session.id}, ${session.userId}")}
       Get("/") ~> addHeader(Cookie("session-id", "my-session-id")) ~> route ~> check {
         handled mustBe true
         responseAs[String] mustBe "my-session-id, user-id"
@@ -69,7 +69,7 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
     }
 
     trait CorrectCookieLackOfPerms { this: Scope =>
-      val route = Session[UserSession](Write) apply {session => complete(s"${session.id}, ${session.userId}")}
+      val route = Session[UserSession, Perm](Write) apply {session => complete(s"${session.id}, ${session.userId}")}
       Get("/") ~> addHeader(Cookie("session-id", "my-session-id")) ~> route ~> check {
         handled mustBe false
         rejection mustBe AuthorizationFailedRejection.get
@@ -77,7 +77,7 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
     }
 
     trait CorrectCookieProperPerms { this: Scope =>
-      val route = Session[UserSession](Read, Write) apply {session => complete(s"${session.id}, ${session.userId}")}
+      val route = Session[UserSession, Perm](Read, Write) apply {session => complete(s"${session.id}, ${session.userId}")}
       Get("/") ~> addHeader(Cookie("session-id", "my-session-id")) ~> route ~> check {
         handled mustBe true
         responseAs[String] mustBe "my-session-id, user-id"
@@ -90,11 +90,13 @@ class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalates
 object SessionDDirectivesSpec {
   import akka.http.documenteddsl.directives.SessionDDirectives._
 
-  sealed trait Perm extends Product with Permission { def code: String = productPrefix.toLowerCase }
+  sealed trait Perm extends Product
   case object Read extends Perm
   case object Write extends Perm
 
-  case class Role(permissions: Set[Permission])
+  implicit val permCodeExtractor: PermissionCodeExtractor[Perm] = _.productPrefix.toLowerCase
+
+  case class Role(permissions: Set[Perm])
   case class UserSession(id: String, userId: String, role: Role)
 
   // pseudo session store
@@ -103,22 +105,22 @@ object SessionDDirectivesSpec {
   )
 
   sealed trait Scope {
-    implicit def sessionProvider: SessionProvider[UserSession]
+    implicit def sessionProvider: SessionProvider[UserSession, Perm]
   }
 
   trait GenericScope extends Scope {
-    def authorize(sessionId: String): Set[Permission] => Option[UserSession] = {
+    def authorize(sessionId: String): Set[Perm] => Option[UserSession] = {
       (permissions) => sessionStore get sessionId filter (session => permissions.isEmpty || permissions.intersect(session.role.permissions).nonEmpty)
     }
 
-    implicit lazy val sessionProvider: SessionProvider[UserSession] = asGenericSessionProvider(authorize)
+    implicit lazy val sessionProvider: SessionProvider[UserSession, Perm] = asGenericSessionProvider(authorize)
   }
 
   trait CustomScope extends Scope {
-    implicit lazy val sessionProvider: SessionProvider[UserSession] = new SessionProvider[UserSession] {
+    implicit lazy val sessionProvider: SessionProvider[UserSession, Perm] = new SessionProvider[UserSession, Perm] {
       import akka.http.scaladsl.server.Directives._
 
-      override def obtain(permissions: Set[Permission]): Directive1[UserSession] = {
+      override def obtain(permissions: Set[Perm]): Directive1[UserSession] = {
         cookie("session-id") flatMap { cp =>
           (sessionStore get cp.value).fold[Directive1[UserSession]](reject(AuthorizationFailedRejection.get)) { session =>
             if (permissions.isEmpty || permissions.intersect(session.role.permissions).nonEmpty) {

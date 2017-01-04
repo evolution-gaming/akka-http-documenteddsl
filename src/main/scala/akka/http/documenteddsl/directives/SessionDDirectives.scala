@@ -13,13 +13,15 @@ import scala.language.implicitConversions
 trait SessionDDirectives {
   import SessionDDirectives._
 
-  case class Session[T](permissions: Permission*)(implicit sp: SessionProvider[T]) extends DDirective1[T] {
+  case class Session[T, P](permissions: P*)(implicit
+    sp: SessionProvider[T, P],
+    permissionCodeExtractor: PermissionCodeExtractor[P] = (x: P) => x.toString) extends DDirective1[T] {
     def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.authorized(
       sessionType = sp.sessionType,
       redirectUri = None,
-      permissions = permissions.toSet[Permission] map {_.code})
+      permissions = permissions.toSet[P] map permissionCodeExtractor)
 
-    def delegate: Directive1[T] = sp.obtain(permissions.toSet[Permission])
+    def delegate: Directive1[T] = sp.obtain(permissions.toSet[P])
 
     def &>(uri: Uri)(implicit as: AutoSchema): DDirective1[T] = {
       val redir: Directive1[T] = akkaRedirect(uri, StatusCodes.Found)
@@ -30,7 +32,7 @@ trait SessionDDirectives {
   }
 
   object Session {
-    def apply[T : SessionProvider]: Session[T] = Session[T]()
+    def apply[T, P : PermissionCodeExtractor](implicit sp: SessionProvider[T, P]): Session[T, P] = Session[T, P]()
   }
 
 }
@@ -39,25 +41,26 @@ object SessionDDirectives extends SessionDDirectives {
   val genericSessionCookieName: String = "session-id"
   val genericSessionType: String = "generic"
 
-  trait Permission { def code: String }
+  type PermissionCodeExtractor[P] = P => String
 
-  trait SessionProvider[T] {
-    def obtain(permissions: Set[Permission]): Directive1[T]
+  trait SessionProvider[T, P] {
+    def obtain(permissions: Set[P]): Directive1[T]
     def sessionType: String
   }
 
-  class GenericSessionProvider[T](cookieName: String, backend: String => Set[Permission] => Option[T]) extends SessionProvider[T] {
-    override def obtain(permissions: Set[Permission]): Directive1[T] = {
+  class GenericSessionProvider[T, P](cookieName: String, backend: String => Set[P] => Option[T]) extends SessionProvider[T, P] {
+    override def obtain(permissions: Set[P]): Directive1[T] = {
       cookie(cookieName) flatMap { cp =>
         val f = backend(cp.value)
         val r = f(permissions)
         r.fold[Directive1[T]](reject(AuthorizationFailedRejection.get))(provide)
       }
     }
+
     override def sessionType: String = genericSessionType
   }
 
-  implicit def asGenericSessionProvider[T](f: String => Set[Permission] => Option[T]): SessionProvider[T] = {
+  implicit def asGenericSessionProvider[T, P](f: String => Set[P] => Option[T]): SessionProvider[T, P] = {
     new GenericSessionProvider(genericSessionCookieName, f)
   }
 }
