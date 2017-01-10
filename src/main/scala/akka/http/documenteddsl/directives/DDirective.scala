@@ -5,7 +5,7 @@ import akka.http.documenteddsl._
 import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.http.scaladsl.server._
-import akka.http.scaladsl.server.util.{ApplyConverter, TupleOps}
+import akka.http.scaladsl.server.util.{ApplyConverter, Tuple, TupleOps, Tupler}
 import akka.http.scaladsl.settings.{ParserSettings, RoutingSettings}
 import akka.stream.Materializer
 import akka.stream.scaladsl.Flow
