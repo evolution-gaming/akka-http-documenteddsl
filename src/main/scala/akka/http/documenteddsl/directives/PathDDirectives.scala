@@ -4,7 +4,7 @@ import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.model.Uri
 import akka.http.scaladsl.server.directives.PathDirectives
 import akka.http.scaladsl.server.util.TupleOps.Join
-import akka.http.scaladsl.server.{Directive, PathMatcher, PathMatcher1}
+import akka.http.scaladsl.server.{Directive, Directive0, PathMatcher, PathMatcher1}
 import org.coursera.autoschema.AutoSchema
 import play.api.libs.json.{JsObject, Json}
 
@@ -13,6 +13,11 @@ import scala.reflect.runtime.{universe => ru}
 import scala.util.matching.Regex
 
 trait PathDDirectives {
+
+  case object PathEnd extends DDirective0 {
+    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w
+    def delegate: Directive0 = PathDirectives.pathEnd
+  }
 
   case class PathPrefix[L](m: PathM[L]) extends DDirective[L] {
     def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.pathPrefix(m.render).parameters(m.parameters)
