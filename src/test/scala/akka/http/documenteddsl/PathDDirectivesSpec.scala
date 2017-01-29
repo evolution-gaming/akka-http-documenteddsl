@@ -40,6 +40,15 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"))
       doc.tail.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("baz"))
     }
+    "be translated to akka (N inner routes)" in {
+      val route = PathPrefix("foo") {
+        Path("bar") { complete("bar") } |~|
+        Path("baz") { complete("baz") }
+      }
+
+      Get("/foo/bar") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "bar"}
+      Get("/foo/baz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "baz"}
+    }
   }
 
 

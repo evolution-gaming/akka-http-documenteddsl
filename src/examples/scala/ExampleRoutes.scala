@@ -12,14 +12,14 @@ import ExampleResourceJson._
 object ExampleRoutes {
   implicit object autoSchema extends AutoSchema with DocumentedTypeMappings
 
-  private val FindAll = Category("Api", "Resource") & Title("Find All") & Description("Returns all resource entries") &
-                        GET &
-                        Out[Set[ExampleResource]]
-  
   private val Find    = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
                         Path(Segment[String]) & GET &
                         Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
-  
+
+  private val FindAll = Category("Api", "Resource") & Title("Find All") & Description("Returns all resource entries") &
+                        GET &
+                        Out[Set[ExampleResource]]
+
   private val Create  = Category("Api", "Resource") & Title("Create") & Description("Creates a new resource entry") &
                         POST &
                         In(CreateExample) & Out[ExampleResource]
@@ -33,8 +33,8 @@ object ExampleRoutes {
                         Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
   lazy val route: DRoute = PathPrefix("resources") {
-    FindAll {complete(collection)} |~|
     Find    {find} |~|
+    FindAll {complete(collection)} |~|
     Create  {create} |~|
     Update  {update} |~|
     Delete  {delete}
