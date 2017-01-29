@@ -66,29 +66,29 @@ import akka.http.documenteddsl.DDirectives._
 ```scala
 implicit object autoSchema extends AutoSchema with DocumentedTypeMappings
 
+private val Find    = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
+                      Path(Segment[String]) & GET &
+                      Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
+
 private val FindAll = Category("Api", "Resource") & Title("Find All") & Description("Returns all resource entries") &
-                      Path("resources") & GET &
+                      GET &
                       Out[Set[ExampleResource]]
 
-private val Find    = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
-                      Path("resources" / Segment[String]) & GET &
-                      Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
-
 private val Create  = Category("Api", "Resource") & Title("Create") & Description("Creates a new resource entry") &
-                      Path("resources") & POST &
+                      POST &
                       In(CreateExample) & Out[ExampleResource]
 
-private val Update  = Category("Api", "Resource") & Title("Create") & Description("Updates specified resource entry") &
-                      Path("resources" / Segment[String]) & PUT &
+private val Update  = Category("Api", "Resource") & Title("Update") & Description("Updates specified resource entry") &
+                      Path(Segment[String]) & PUT &
                       In(UpdateExample) & Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
-private val Delete  = Category("Api", "Resource") & Title("Create") & Description("Deletes specified resource entry") &
-                      Path("resources" / Segment[String]) & DELETE &
+private val Delete  = Category("Api", "Resource") & Title("Delete") & Description("Deletes specified resource entry") &
+                      Path(Segment[String]) & DELETE &
                       Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
-lazy val route: DRoute = {
-  FindAll {complete(collection)} |~|
+lazy val route: DRoute = PathPrefix("resources") {
   Find    {find} |~|
+  FindAll {complete(collection)} |~|
   Create  {create} |~|
   Update  {update} |~|
   Delete  {delete}
@@ -214,7 +214,7 @@ GET http://localhost:8080/api.json/14906C3B8B40240130BFA42E
 ### Known issues
  - Only Play Json supported now
  - Your payloads always treated as json payloads
- - Lack of ability to describe route hierarchically
+ - Lack of ability to describe route hierarchically (it is possible only for Directive0, so you still can prefix your routes)
  
 ## Setup
 **Sbt**
