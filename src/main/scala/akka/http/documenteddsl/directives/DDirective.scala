@@ -33,17 +33,28 @@ object DDirective {
     */
   implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], as: AutoSchema): hac.In => DRoute =
     f => new DRoute(
-      underlying  = d.delegate.tapply(hac(f)),
-      writer      = doc => doc(rd => d.describe(rd)))
+      underlying  = d.delegate tapply hac(f),
+      writer      = _ withRoute d.describe)
 
   /**
     * Adds `apply` to Directive0. Note: The `apply` parameter is call-by-name to ensure consistent execution behavior
     * with the directives producing extractions.
+    *
+    * Currently it is a drawback that only Directive0 can be properly applied to documentation
     */
-  implicit def addByNameNullaryApply(d: DDirective0)(implicit as: AutoSchema): (=> DRoute) => DRoute =
+  implicit def addByNameNullaryApply(d: DDirective0)(implicit as: AutoSchema): (=> DRoute) => DRoute = {
+    def writer(innerRoute: DRoute)(doc: Documentation)(implicit as: AutoSchema): Documentation = {
+      val innerDoc = innerRoute describe Documentation()
+      val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe else {
+        Documentation(routes = innerDoc.routes map d.describe)
+      }
+      outerDoc
+    }
+
     r => new DRoute(
-      underlying  = d.delegate.tapply(_ => r),
-      writer      = doc => doc(rd => d.describe(rd)))
+      underlying  = d.delegate tapply { _ => r },
+      writer      = writer(r))
+  }
 
   implicit def documentedRoute2HandlerFlow(route: DRoute)(implicit
     routingSettings:  RoutingSettings,

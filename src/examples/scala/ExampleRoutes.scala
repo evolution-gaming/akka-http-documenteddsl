@@ -13,26 +13,26 @@ object ExampleRoutes {
   implicit object autoSchema extends AutoSchema with DocumentedTypeMappings
 
   private val FindAll = Category("Api", "Resource") & Title("Find All") & Description("Returns all resource entries") &
-                        Path("resources") & GET &
+                        GET &
                         Out[Set[ExampleResource]]
   
   private val Find    = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
-                        Path("resources" / Segment[String]) & GET &
+                        Path(Segment[String]) & GET &
                         Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
   
   private val Create  = Category("Api", "Resource") & Title("Create") & Description("Creates a new resource entry") &
-                        Path("resources") & POST &
+                        POST &
                         In(CreateExample) & Out[ExampleResource]
   
   private val Update  = Category("Api", "Resource") & Title("Update") & Description("Updates specified resource entry") &
-                        Path("resources" / Segment[String]) & PUT &
+                        Path(Segment[String]) & PUT &
                         In(UpdateExample) & Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
   
   private val Delete  = Category("Api", "Resource") & Title("Delete") & Description("Deletes specified resource entry") &
-                        Path("resources" / Segment[String]) & DELETE &
+                        Path(Segment[String]) & DELETE &
                         Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
-  lazy val route: DRoute = {
+  lazy val route: DRoute = PathPrefix("resources") {
     FindAll {complete(collection)} |~|
     Find    {find} |~|
     Create  {create} |~|

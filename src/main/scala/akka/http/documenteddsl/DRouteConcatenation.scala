@@ -21,13 +21,14 @@ object DRouteConcatenation {
     def |~|(other: DRoute): DRoute = {
       val concatenated = new RouteConcatenation.RouteWithConcatenation(route).~(other)
       new DRoute(concatenated) {
-        override def describe(rw: Documentation): Documentation = {
-          def document(route: Route, doc: Documentation): Documentation = route match {
-            case route: DRoute => route.describe(doc)
+        override def describe(doc: Documentation): Documentation = {
+          def write(route: Route, doc: Documentation): Documentation = route match {
+            case x: DRoute => x.describe(doc)
             case _ => doc
           }
 
-          document(route, document(other, rw))
+          val docWithOther = write(other, doc)
+          write(route, docWithOther)
         }
       }
     }

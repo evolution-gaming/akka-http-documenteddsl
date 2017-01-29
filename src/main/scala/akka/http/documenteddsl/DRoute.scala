@@ -9,7 +9,7 @@ class DRoute(
   underlying: Route,
   writer: Documentation => Documentation = identity) extends Route {
 
-  def describe(doc: Documentation = Documentation()): Documentation = writer apply doc
+  def describe(doc: Documentation): Documentation = writer apply doc
   override def apply(ctx: RequestContext): Future[RouteResult] = underlying apply ctx
   override def toString = s"DocumentedRoute()"
 }

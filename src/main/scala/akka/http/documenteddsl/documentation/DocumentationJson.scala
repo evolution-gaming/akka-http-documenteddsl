@@ -7,21 +7,24 @@ import play.api.libs.json._
 
 trait DocumentationJson {
 
-  implicit val originFormat = new Format[Origin]() {
-    override def reads(json: JsValue): JsResult[Origin] = json.validate[String] flatMap Origin.validate
+  implicit val originWrites = new Writes[Origin]() {
     override def writes(o: Origin): JsValue = JsString(o.productPrefix.toLowerCase)
   }
+  
+  implicit def pathWrites = new Writes[PathDocumentation]() {
+    override def writes(o: PathDocumentation): JsValue = JsString(o.render())
+  }
 
-  implicit val sessionFormat: Format[SessionDocumentation]        = Json.format[SessionDocumentation]
-  implicit val statusFormat: Format[Status]                       = Json.format[Status]
-  implicit val successFormat: Format[Success]                     = Json.format[Success]
-  implicit val errorFormat: Format[Failure]                       = Json.format[Failure]
-  implicit val outFormat: Format[OutDocumentation]                = Json.format[OutDocumentation]
-  implicit val inFormat: Format[InDocumentation]                  = Json.format[InDocumentation]
-  implicit val paramDocFormat: Format[ParamDocumentation]         = Json.format[ParamDocumentation]
-  implicit val headerDocFormat: Format[HeaderDocumentation]       = Json.format[HeaderDocumentation]
-  implicit val routeDocFormat: Format[RouteDocumentation]         = Json.format[RouteDocumentation]
-  implicit val docFormat: Format[Documentation]                   = Json.format[Documentation]
+  implicit val sessionWrites: Writes[SessionDocumentation]        = Json.writes[SessionDocumentation]
+  implicit val statusWrites: Writes[Status]                       = Json.writes[Status]
+  implicit val successWrites: Writes[Success]                     = Json.writes[Success]
+  implicit val errorWrites: Writes[Failure]                       = Json.writes[Failure]
+  implicit val outWrites: Writes[OutDocumentation]                = Json.writes[OutDocumentation]
+  implicit val inWrites: Writes[InDocumentation]                  = Json.writes[InDocumentation]
+  implicit val paramDocWrites: Writes[ParamDocumentation]         = Json.writes[ParamDocumentation]
+  implicit val headerDocWrites: Writes[HeaderDocumentation]       = Json.writes[HeaderDocumentation]
+  implicit val routeDocWrites: Writes[RouteDocumentation]         = Json.writes[RouteDocumentation]
+  implicit val docWrites: Writes[Documentation]                   = Json.writes[Documentation]
 }
 
 object DocumentationJson extends DocumentationJson

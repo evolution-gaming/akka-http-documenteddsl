@@ -11,7 +11,7 @@ import scala.reflect.runtime.{universe => ru}
 case class RouteDocumentation(
   uid: String = UID(),
   method: Option[String] = None,
-  path: Option[String] = None,
+  path: PathDocumentation = PathDocumentation.Empty,
   session: Option[SessionDocumentation] = None,
   parameters: Option[List[ParamDocumentation]] = None,
   headers: Option[List[HeaderDocumentation]] = None,
@@ -29,7 +29,11 @@ case class RouteDocumentation(
 
   def method(m: String): RouteDocumentation = copy(method = Some(m))
 
-  def path(p: String): RouteDocumentation = copy(path = Some(p))
+  def path(p: String): RouteDocumentation = copy(path = path withPath p)
+
+  def pathPrefix(p: String): RouteDocumentation = copy(path = path withPrefix p)
+
+  def pathSuffix(p: String): RouteDocumentation = copy(path = path withSuffix p)
 
   def authorized(
     sessionType: String,

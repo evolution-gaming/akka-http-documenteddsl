@@ -3,7 +3,7 @@ package akka.http.documenteddsl.documentation
 import play.api.libs.json._
 
 case class Documentation(routes: List[RouteDocumentation] = List.empty) {
-  def apply(f: RouteDocumentation => RouteDocumentation): Documentation = {
+  def withRoute(f: RouteDocumentation => RouteDocumentation): Documentation = {
     copy(routes = f(RouteDocumentation()) +: routes)
   }
 

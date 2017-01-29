@@ -14,6 +14,18 @@ import scala.util.matching.Regex
 
 trait PathDDirectives {
 
+  case class PathPrefix[L](m: PathM[L]) extends DDirective[L] {
+    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.pathPrefix(m.render).parameters(m.parameters)
+    def delegate: Directive[L] = PathDirectives.pathPrefix(m.asAkka)
+    def /[R](s: PathM[R])(implicit join: Join[L, R]): PathPrefix[join.Out] = PathPrefix(m / s).asInstanceOf[PathPrefix[join.Out]]
+  }
+
+  case class PathSuffix[L](m: PathM[L]) extends DDirective[L] {
+    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.pathSuffix(m.render).parameters(m.parameters)
+    def delegate: Directive[L] = PathDirectives.pathSuffix(m.asAkka)
+    def /[R](s: PathM[R])(implicit join: Join[L, R]): PathSuffix[join.Out] = PathSuffix(m / s).asInstanceOf[PathSuffix[join.Out]]
+  }
+
   case class Path[L](m: PathM[L]) extends DDirective[L] {
     def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.path(m.render).parameters(m.parameters)
     def delegate: Directive[L] = PathDirectives.path(m.asAkka)
