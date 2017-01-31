@@ -17,18 +17,20 @@ trait DRouteConcatenation {
 
 object DRouteConcatenation {
 
-  class DRouteWithConcatenation(route: DRoute) {
-    def |~|(other: DRoute): DRoute = {
-      val concatenated = new RouteConcatenation.RouteWithConcatenation(route).~(other)
-      new DRoute(concatenated) {
-        override def describe(doc: Documentation): Documentation = {
-          def write(route: Route, doc: Documentation): Documentation = route match {
-            case x: DRoute => x.describe(doc)
-            case _ => doc
-          }
+  class DRouteWithConcatenation(left: DRoute) {
+    def |~|(right: DRoute): DRoute = {
+      val concatenated = new RouteConcatenation.RouteWithConcatenation(left) ~ right
 
-          val docWithOther = write(other, doc)
-          write(route, docWithOther)
+      new DRoute(concatenated) {
+        override def selfDescribe(initial: Documentation): Documentation = {
+          val withRight = right selfDescribe Documentation()
+          val withLeft  = left  selfDescribe Documentation()
+
+//          println(" > "+initial.routes.map{_.path.render} )
+//          println("0> "+withRight.routes.map{_.path.render} )
+//          println("1> "+withLeft.routes.map{_.path.render})
+
+          Documentation(initial.routes ++ withLeft.routes ++ withRight.routes)
         }
       }
     }

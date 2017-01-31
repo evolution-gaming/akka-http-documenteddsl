@@ -44,7 +44,7 @@ object DDirective {
     */
   implicit def addByNameNullaryApply(d: DDirective0)(implicit as: AutoSchema): (=> DRoute) => DRoute = {
     def writer(innerRoute: DRoute)(doc: Documentation)(implicit as: AutoSchema): Documentation = {
-      val innerDoc = innerRoute describe Documentation()
+      val innerDoc = innerRoute selfDescribe Documentation()
       val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe else {
         Documentation(routes = innerDoc.routes map d.describe)
       }

@@ -9,9 +9,9 @@ class DRoute(
   underlying: Route,
   writer: Documentation => Documentation = identity) extends Route {
 
-  def describe(doc: Documentation): Documentation = writer apply doc
+  def selfDescribe(doc: Documentation): Documentation = writer apply doc
   override def apply(ctx: RequestContext): Future[RouteResult] = underlying apply ctx
-  override def toString = s"DocumentedRoute()"
+  override def toString = "DocumentedRoute()"
 }
 
 object DRoute {
@@ -22,5 +22,5 @@ object DRoute {
       case _ => new DRoute(r)
     }
   }
-  def copyDocumentation(from: DRoute, to: Route): DRoute = new DRoute(to, from.describe)
+  def copyDocumentation(from: DRoute, to: Route): DRoute = new DRoute(to, from.selfDescribe)
 }

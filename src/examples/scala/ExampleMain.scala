@@ -14,7 +14,7 @@ object ExampleMain extends App {
 
   val routes = {
     val apiRoutes = ExampleRoutes.route
-    val documentation = apiRoutes.describe(Documentation())
+    val documentation = apiRoutes.selfDescribe(Documentation())
     val documentationRoute = pathPrefix("api.json") {
       DocumentationRoutes(documentation)
     }

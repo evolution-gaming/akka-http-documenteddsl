@@ -26,7 +26,7 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       val route = PathPrefix("foo") {
         Path("bar") { complete("") }
       }
-      val doc = route.describe(Documentation()).routes
+      val doc = route.selfDescribe(Documentation()).routes
       doc.size mustBe 1
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"))
     }
@@ -36,7 +36,7 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
           Path("baz") {complete("")}
         }
       }
-      val doc = route.describe(Documentation()).routes
+      val doc = route.selfDescribe(Documentation()).routes
       doc.size mustBe 1
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo/bar"), path = Some("baz"))
     }
@@ -45,10 +45,26 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
         Path("bar") { complete("") } |~|
         Path("baz") { complete("") }
       }
-      val doc = route.describe(Documentation()).routes
+      val doc = route.selfDescribe(Documentation()).routes
       doc.size mustBe 2
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"))
       doc.tail.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("baz"))
+    }
+    "mix by apply (NxN inner routes)" in {
+      val route1 = PathPrefix("000") {
+        Path("002") { complete("") } |~|
+        Path("003") { complete("") }
+      }
+      val route2 = PathPrefix("111") {
+        Path("112") { complete("") } |~|
+        Path("113") { complete("") }
+      }
+      val doc = (route1 |~| route2) selfDescribe Documentation()
+      val List(r0, r1, r2, r3) = doc.routes
+      r0.path mustBe PathDocumentation.NonEmpty(prefix = Some("000"), path = Some("002"))
+      r1.path mustBe PathDocumentation.NonEmpty(prefix = Some("000"), path = Some("003"))
+      r2.path mustBe PathDocumentation.NonEmpty(prefix = Some("111"), path = Some("112"))
+      r3.path mustBe PathDocumentation.NonEmpty(prefix = Some("111"), path = Some("113"))
     }
     "be translated to akka (N inner routes)" in {
       val route = PathPrefix("foo") {
@@ -77,7 +93,7 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       val route = Path("bar") {
         PathSuffix("baz") { complete("") }
       }
-      val doc = route.describe(Documentation()).routes
+      val doc = route.selfDescribe(Documentation()).routes
       doc.size mustBe 1
       doc.head.path mustBe PathDocumentation.NonEmpty(path = Some("bar"), suffix = Some("baz"))
     }
@@ -88,7 +104,7 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
           PathSuffix("bax") { complete("") }
         }
       }
-      val doc = route.describe(Documentation()).routes
+      val doc = route.selfDescribe(Documentation()).routes
       doc.size mustBe 2
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"), suffix = Some("baz"))
       doc.tail.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"), suffix = Some("bax"))
