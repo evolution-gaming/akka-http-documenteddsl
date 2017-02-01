@@ -6,6 +6,14 @@ import akka.http.documenteddsl.documentation.OutDocumentation._
 import play.api.libs.json._
 
 trait DocumentationJson {
+  import Documentation._
+
+  implicit val nodeWrites: Writes[Node] = new Writes[Node] {
+    override def writes(n: Node): JsValue = n match {
+      case n: RouteNode => Json.obj("label" -> n.label, "uid" -> n.uid)
+      case n: TopicNode => Json.obj("label" -> n.label, "children" -> n.children.map(writes))
+    }
+  }
 
   implicit val originWrites = new Writes[Origin]() {
     override def writes(o: Origin): JsValue = JsString(o.productPrefix.toLowerCase)
