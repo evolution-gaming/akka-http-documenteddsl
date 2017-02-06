@@ -18,6 +18,10 @@ trait DDirective[L] { self =>
   def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation
   def &(magnet: DConjunctionMagnet[L]): magnet.Out = magnet(this)
   def delegate: Directive[L]
+  def map[R](f: L ⇒ R)(implicit tupler: Tupler[R], as: AutoSchema): DDirective[tupler.Out] = new DDirectiveDelegate(
+    dir = (delegate tmap f).asInstanceOf[Directive[tupler.Out]],
+    writer = self.describe
+  )
 }
 
 class DDirectiveDelegate[L](dir: Directive[L], writer: RouteDocumentation => RouteDocumentation = identity) extends DDirective[L] {
