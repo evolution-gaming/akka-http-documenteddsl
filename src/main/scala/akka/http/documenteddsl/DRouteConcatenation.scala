@@ -26,10 +26,6 @@ object DRouteConcatenation {
           val withRight = right selfDescribe Documentation()
           val withLeft  = left  selfDescribe Documentation()
 
-//          println(" > "+initial.routes.map{_.path.render} )
-//          println("0> "+withRight.routes.map{_.path.render} )
-//          println("1> "+withLeft.routes.map{_.path.render})
-
           Documentation(initial.routes ++ withLeft.routes ++ withRight.routes)
         }
       }
