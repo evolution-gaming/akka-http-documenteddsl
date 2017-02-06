@@ -25,7 +25,8 @@ trait UnmarshallingDDirectives {
     def apply[T : ru.TypeTag](status: StatusCode): SuccessfulOut[T] = new SuccessfulOut(status, None)
     def apply[T : ru.TypeTag](example: T)(implicit writes: Writes[T]): SuccessfulOut[T] = new SuccessfulOut(StatusCodes.OK, Some(writes writes example))
     def apply[T : ru.TypeTag](status: StatusCode, example: T)(implicit writes: Writes[T]): SuccessfulOut[T] = new SuccessfulOut(status, Some(writes writes example))
-    def apply(status: StatusCode): ErrorOut = new ErrorOut(status, None, None)
+    def success(status: StatusCode): SuccessfulOut[Nothing] = new SuccessfulOut(status, None)
+    def error(status: StatusCode): ErrorOut = new ErrorOut(status, None, None)
     def apply(status: StatusCode, description: String): ErrorOut = new ErrorOut(status, None, Some(description))
     def apply(status: StatusCode, contentType: ContentType, description: String): ErrorOut = new ErrorOut(status, Some(contentType.toString()), Some(description))
   }

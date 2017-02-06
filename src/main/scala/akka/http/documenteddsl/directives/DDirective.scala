@@ -35,6 +35,15 @@ class DDirectiveDelegate[L](dir: Directive[L], writer: RouteDocumentation => Rou
 
 object DDirective {
 
+  val Empty: DDirective0 = new DDirectiveDelegate(Directive.Empty)
+
+  /**
+    * Constructs a directive from a function literal.
+    */
+  def apply[T: Tuple](
+    f: (T ⇒ Route) ⇒ Route,
+    writer: RouteDocumentation => RouteDocumentation = identity): DDirective[T] = new DDirectiveDelegate(Directive(f))
+
   /**
     * Adds `apply` to all Directives with 1 or more extractions,
     * which allows specifying an n-ary function to receive the extractions instead of a Function1[TupleX, Route].

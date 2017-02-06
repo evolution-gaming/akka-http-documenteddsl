@@ -22,7 +22,6 @@ object JsonSchema {
   val string: JsObject    = Json.obj("type" -> "string")
   val numeric: JsObject   = Json.obj("type" -> "number", "format" -> "number")
   val boolean: JsObject   = Json.obj("type" -> "boolean")
-
 }
 
 trait DocumentedTypeMappings extends TypeMappings {
@@ -33,6 +32,8 @@ trait DocumentedTypeMappings extends TypeMappings {
   }
 
   private val schemaTypes = Map(
+    "scala.Nothing"           -> Json.obj(),
+    "scala.Unit"              -> Json.obj(),
     "org.joda.time.DateTime"  -> Json.obj("type" -> "string", "format" -> "date"),
     "java.time.ZonedDateTime" -> Json.obj("type" -> "string", "format" -> "date"),
     "java.time.LocalDate"     -> Json.obj("type" -> "string", "format" -> "date", "pattern" -> localDatePattern),
@@ -48,7 +49,6 @@ trait DocumentedTypeMappings extends TypeMappings {
   )
 
   lazy val localDatePattern = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-
 }
 
 object DocumentedTypeMappings extends DocumentedTypeMappings
