@@ -22,6 +22,10 @@ trait DDirective[L] { self =>
     dir = (delegate tmap f).asInstanceOf[Directive[tupler.Out]],
     writer = self.describe
   )
+  def flatMap[R: Tuple](f: L ⇒ Directive[R])(implicit as: AutoSchema): DDirective[R] = new DDirectiveDelegate(
+    dir = delegate tflatMap f,
+    writer = self.describe
+  )
 }
 
 class DDirectiveDelegate[L](dir: Directive[L], writer: RouteDocumentation => RouteDocumentation = identity) extends DDirective[L] {
