@@ -1,0 +1,36 @@
+package akka.http.documenteddsl.util
+
+import akka.http.scaladsl.server.util.Tuple
+
+abstract class NullTuple[L] {
+  def tuple: L
+}
+
+object NullTuple extends NullTupleInstances
+
+private[util] abstract class NullTupleInstances {
+  private def x[L]: L = null.asInstanceOf[L]
+
+  implicit def n1[T1]: NullTuple[Tuple1[T1]] = new NullTuple[Tuple1[T1]] { val tuple = Tuple1(x[T1]) }
+  implicit def n2[T1, T2]: NullTuple[Tuple2[T1, T2]] = new NullTuple[Tuple2[T1, T2]] { val tuple = Tuple2(x[T1], x[T2]) }
+  implicit def n3[T1, T2, T3]: NullTuple[Tuple3[T1, T2, T3]] = new NullTuple[Tuple3[T1, T2, T3]] { val tuple = Tuple3(x[T1], x[T2], x[T3]) }
+  implicit def n4[T1, T2, T3, T4]: NullTuple[Tuple4[T1, T2, T3, T4]] = new NullTuple[Tuple4[T1, T2, T3, T4]] { val tuple = Tuple4(x[T1], x[T2], x[T3], x[T4]) }
+  implicit def n5[T1, T2, T3, T4, T5]: NullTuple[Tuple5[T1, T2, T3, T4, T5]] = new NullTuple[Tuple5[T1, T2, T3, T4, T5]] { val tuple = Tuple5(x[T1], x[T2], x[T3], x[T4], x[T5]) }
+  implicit def n6[T1, T2, T3, T4, T5, T6]: NullTuple[Tuple6[T1, T2, T3, T4, T5, T6]] = new NullTuple[Tuple6[T1, T2, T3, T4, T5, T6]] { val tuple = Tuple6(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6]) }
+  implicit def n7[T1, T2, T3, T4, T5, T6, T7]: NullTuple[Tuple7[T1, T2, T3, T4, T5, T6, T7]] = new NullTuple[Tuple7[T1, T2, T3, T4, T5, T6, T7]] { val tuple = Tuple7(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7]) }
+  implicit def n8[T1, T2, T3, T4, T5, T6, T7, T8]: NullTuple[Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]] = new NullTuple[Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]] { val tuple = Tuple8(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8]) }
+  implicit def n9[T1, T2, T3, T4, T5, T6, T7, T8, T9]: NullTuple[Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]] = new NullTuple[Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]] { val tuple = Tuple9(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9]) }
+  implicit def n10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]: NullTuple[Tuple10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]] = new NullTuple[Tuple10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]] { val tuple = Tuple10(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10]) }
+  implicit def n11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11]: NullTuple[Tuple11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11]] = new NullTuple[Tuple11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11]] { val tuple = Tuple11(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11]) }
+  implicit def n12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12]: NullTuple[Tuple12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12]] = new NullTuple[Tuple12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12]] { val tuple = Tuple12(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12]) }
+  implicit def n13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13]: NullTuple[Tuple13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13]] = new NullTuple[Tuple13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13]] { val tuple = Tuple13(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13]) }
+  implicit def n14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14]: NullTuple[Tuple14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14]] = new NullTuple[Tuple14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14]] { val tuple = Tuple14(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14]) }
+  implicit def n15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15]: NullTuple[Tuple15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15]] = new NullTuple[Tuple15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15]] { val tuple = Tuple15(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15]) }
+  implicit def n16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16]: NullTuple[Tuple16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16]] = new NullTuple[Tuple16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16]] { val tuple = Tuple16(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16]) }
+  implicit def n17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17]: NullTuple[Tuple17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17]] = new NullTuple[Tuple17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17]] { val tuple = Tuple17(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17]) }
+  implicit def n18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18]: NullTuple[Tuple18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18]] = new NullTuple[Tuple18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18]] { val tuple = Tuple18(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17], x[T18]) }
+  implicit def n19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19]: NullTuple[Tuple19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19]] = new NullTuple[Tuple19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19]] { val tuple = Tuple19(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17], x[T18], x[T19]) }
+  implicit def n20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20]: NullTuple[Tuple20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20]] = new NullTuple[Tuple20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20]] { val tuple = Tuple20(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17], x[T18], x[T19], x[T20]) }
+  implicit def n21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21]: NullTuple[Tuple21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21]] = new NullTuple[Tuple21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21]] { val tuple = Tuple21(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17], x[T18], x[T19], x[T20], x[T21]) }
+  implicit def n22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22]: NullTuple[Tuple22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22]] = new NullTuple[Tuple22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22]] { val tuple = Tuple22(x[T1], x[T2], x[T3], x[T4], x[T5], x[T6], x[T7], x[T8], x[T9], x[T10], x[T11], x[T12], x[T13], x[T14], x[T15], x[T16], x[T17], x[T18], x[T19], x[T20], x[T21], x[T22]) }
+}

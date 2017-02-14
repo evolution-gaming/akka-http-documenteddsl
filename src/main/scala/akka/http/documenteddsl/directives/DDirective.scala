@@ -3,6 +3,7 @@ package akka.http.documenteddsl.directives
 import akka.NotUsed
 import akka.http.documenteddsl._
 import akka.http.documenteddsl.documentation._
+import akka.http.documenteddsl.util.NullTuple
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.util.{ApplyConverter, Tuple, TupleOps, Tupler}
@@ -44,33 +45,37 @@ object DDirective {
     f: (T ⇒ Route) ⇒ Route,
     writer: RouteDocumentation => RouteDocumentation = identity): DDirective[T] = new DDirectiveDelegate(Directive(f))
 
+
+  private def writer[L](innerRoute: DRoute, d: DDirective[L])(doc: Documentation)(implicit as: AutoSchema): Documentation = {
+    val innerDoc = innerRoute selfDescribe Documentation()
+    val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe else {
+      Documentation(routes = innerDoc.routes map d.describe)
+    }
+    outerDoc
+  }
+
   /**
     * Adds `apply` to all Directives with 1 or more extractions,
     * which allows specifying an n-ary function to receive the extractions instead of a Function1[TupleX, Route].
     */
-  implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], as: AutoSchema): hac.In => DRoute =
-    f => new DRoute(
-      underlying  = d.delegate tapply hac(f),
-      writer      = _ withRoute d.describe)
+  implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], nt: NullTuple[L], as: AutoSchema): hac.In => DRoute =
+    f => {
+      // force evaluation of `hac(f)` with nulls to get the inner route
+      // it brakes the idea of dynamic routes, but it is better then nothing
+      val r = DRoute maybe {hac(f)(nt.tuple)}
+      new DRoute(
+        underlying  = d.delegate tapply hac(f),
+        writer      = writer(r, d))
+    }
 
   /**
     * Adds `apply` to Directive0. Note: The `apply` parameter is call-by-name to ensure consistent execution behavior
     * with the directives producing extractions.
-    *
-    * Currently it is a drawback that only Directive0 can be properly applied to documentation
     */
   implicit def addByNameNullaryApply(d: DDirective0)(implicit as: AutoSchema): (=> DRoute) => DRoute = {
-    def writer(innerRoute: DRoute)(doc: Documentation)(implicit as: AutoSchema): Documentation = {
-      val innerDoc = innerRoute selfDescribe Documentation()
-      val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe else {
-        Documentation(routes = innerDoc.routes map d.describe)
-      }
-      outerDoc
-    }
-
     r => new DRoute(
       underlying  = d.delegate tapply { _ => r },
-      writer      = writer(r))
+      writer      = writer(r, d))
   }
 
   implicit def documentedRoute2HandlerFlow(route: DRoute)(implicit

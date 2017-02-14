@@ -3,8 +3,8 @@ package akka.http.documenteddsl
 import java.time.LocalDate
 
 import DDirectives._
+import akka.http.scaladsl.server.directives.RouteDirectives
 import documentation._
-
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.MustMatchers._
 import org.scalatest.WordSpec
@@ -41,14 +41,24 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo/bar"), path = Some("baz"))
     }
     "mix by apply (N inner routes)" in {
-      val route = PathPrefix("foo") {
-        Path("bar") { complete("") } |~|
-        Path("baz") { complete("") }
+      val SomeHeader = Header("-x-some", "some")
+      val route = PathPrefix("0") {
+        (PathPrefix("0") & SomeHeader) { h =>
+          Path("0") { complete("0") } |~|
+          Path("1") { complete("1") }
+        } |~|
+        PathPrefix("1") {
+          Path("0") { complete("0") } |~|
+          Path("1") { complete("1") }
+        }
       }
-      val doc = route.selfDescribe(Documentation()).routes
-      doc.size mustBe 2
-      doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("bar"))
-      doc.tail.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo"), path = Some("baz"))
+      val doc = route.selfDescribe(Documentation())
+      doc.routes.size mustBe 4
+      val List(r0, r1, r2, r3) = doc.routes
+      r0.path mustBe PathDocumentation.NonEmpty(prefix = Some("0/0"), path = Some("0"))
+      r1.path mustBe PathDocumentation.NonEmpty(prefix = Some("0/0"), path = Some("1"))
+      r2.path mustBe PathDocumentation.NonEmpty(prefix = Some("0/1"), path = Some("0"))
+      r3.path mustBe PathDocumentation.NonEmpty(prefix = Some("0/1"), path = Some("1"))
     }
     "mix by apply (NxN inner routes)" in {
       val route1 = PathPrefix("000") {
@@ -160,7 +170,7 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       Get("/x/x") ~> route ~> check {handled mustBe false}
     }
     "be translated to akka (N segments with date variables)" in {
-      val route = Path("a" / Segment[LocalDate]("creation date") / "c") apply {case (x: LocalDate) => complete(s"$x")}
+      val route = Path("a" / Segment[LocalDate]("creation date") / "c") apply {(x: LocalDate) => complete(s"$x")}
       Get("/a/2000-01-01/c") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "2000-01-01"}
       Get("/a/foo-bar/c") ~> route ~> check {handled mustBe false}
       Get("/x/x") ~> route ~> check {handled mustBe false}
