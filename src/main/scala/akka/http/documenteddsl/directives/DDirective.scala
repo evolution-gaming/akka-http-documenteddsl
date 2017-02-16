@@ -3,7 +3,6 @@ package akka.http.documenteddsl.directives
 import akka.NotUsed
 import akka.http.documenteddsl._
 import akka.http.documenteddsl.documentation._
-import akka.http.documenteddsl.util.NullTuple
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.util.{ApplyConverter, Tuple, TupleOps, Tupler}
@@ -58,15 +57,11 @@ object DDirective {
     * Adds `apply` to all Directives with 1 or more extractions,
     * which allows specifying an n-ary function to receive the extractions instead of a Function1[TupleX, Route].
     */
-  implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], nt: NullTuple[L], as: AutoSchema): hac.In => DRoute =
-    f => {
-      // force evaluation of `hac(f)` with nulls to get the inner route
-      // it brakes the idea of dynamic routes, but it is better then nothing
-      val r = DRoute maybe {hac(f)(nt.tuple)}
-      new DRoute(
+  implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], as: AutoSchema): hac.In => DRoute =
+    f => new DRoute(
         underlying  = d.delegate tapply hac(f),
-        writer      = writer(r, d))
-    }
+        writer      = _ withRoute d.describe)
+
 
   /**
     * Adds `apply` to Directive0. Note: The `apply` parameter is call-by-name to ensure consistent execution behavior

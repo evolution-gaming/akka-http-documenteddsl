@@ -41,9 +41,8 @@ class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRo
       doc.head.path mustBe PathDocumentation.NonEmpty(prefix = Some("foo/bar"), path = Some("baz"))
     }
     "mix by apply (N inner routes)" in {
-      val SomeHeader = Header("-x-some", "some")
       val route = PathPrefix("0") {
-        (PathPrefix("0") & SomeHeader) { h =>
+        PathPrefix("0") {
           Path("0") { complete("0") } |~|
           Path("1") { complete("1") }
         } |~|
