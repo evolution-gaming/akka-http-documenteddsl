@@ -31,20 +31,15 @@ class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalatest
         required = true,
         constraints = Some(Set("A", "B")))))
 
-      Header(`Content-Type`).describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
+      Header[`Content-Type`].describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
         name = "Content-Type",
         required = true,
         constraints = None)))
-
-      Header(`Content-Type`, "A", "B").describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
-        name = "Content-Type",
-        required = true,
-        constraints = Some(Set("A", "B")))))
     }
     "be counted during request processing (positive)" in {
       import ContentTypes._
 
-      val route0 = Header(`Content-Type`) apply {x => complete(s"$x")}
+      val route0 = Header[`Content-Type`] apply {x => complete(s"${x.value()}")}
       Get("/") ~> addHeader(`Content-Type`(`application/json`)) ~> route0 ~> check {
         handled mustBe true
         responseAs[String] mustBe "application/json"}
@@ -55,7 +50,7 @@ class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalatest
         responseAs[String] mustBe "foo"}
     }
     "be counted during request processing (negative)" in {
-      val route = Header(`Content-Type`) apply {x => complete(s"$x")}
+      val route = Header[`Content-Type`] apply {x => complete(s"$x")}
       Get("/") ~> route ~> check {
         handled mustBe false
       }

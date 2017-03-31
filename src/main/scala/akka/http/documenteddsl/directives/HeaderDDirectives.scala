@@ -1,14 +1,16 @@
 package akka.http.documenteddsl.directives
 
 import akka.http.documenteddsl.documentation.{ParamDocumentation, RouteDocumentation}
-import akka.http.scaladsl.model.HttpHeader
-import akka.http.scaladsl.model.headers.ModeledCompanion
+import akka.http.scaladsl.model.StatusCodes._
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers._
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.directives.HeaderMagnet
+import akka.http.scaladsl.server.directives._
 import akka.http.scaladsl.unmarshalling._
 import org.coursera.autoschema.AutoSchema
 
+import scala.reflect.ClassTag
 import scala.reflect.runtime.{universe => ru}
 
 trait HeaderDDirectives {
@@ -23,19 +25,19 @@ trait HeaderDDirectives {
     }
   }
 
-  case class HeaderByType[T](m: HeaderMagnet[T], acceptedValues: T*) extends Header[T] {
+  case class HeaderByType[T <: HttpHeader](implicit ct: ClassTag[T]) extends Header[T] {
     def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = {
-      w.header(m.headerName, required = true, constraints = if (acceptedValues.isEmpty) None else Some(acceptedValues.toSet map {_.toString}))
+      w.header(ModeledCompanion.nameFromClass(ct.runtimeClass), required = true, constraints = None)
     }
     def delegate: Directive1[T] = {
-      if (acceptedValues.isEmpty) headerValueByType(m) else headerValueByType(m) filter acceptedValues.contains
+      headerValueByType[T](HeaderMagnet.fromClassTagNormalHeader[T](ct))
     }
   }
 
   object Header {
     def apply(name: String, acceptedValues: String*): Header[String]  = HeaderByName(name, acceptedValues:_*)
     def apply(s: Symbol, acceptedValues: String*): Header[String]     = HeaderByName(s.name, acceptedValues:_*)
-    def apply[T](m: HeaderMagnet[T], acceptedValues: T*): Header[T]   = HeaderByType(m, acceptedValues:_*)
+    def apply[T <: HttpHeader: ClassTag]: Header[T] = HeaderByType[T]()
   }
 
   case class OptHeader(name: String, acceptedValues: String*) extends DDirective1[Option[String]] {
