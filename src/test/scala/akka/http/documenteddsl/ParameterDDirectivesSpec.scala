@@ -20,6 +20,14 @@ class ParameterDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalat
       val route = Param[String]("xxx") apply {x => complete(s"$x")}
       Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
     }
+
+    "be preprocessed" in {
+      implicit val preprocess = new Preprocess[String] {
+        override def apply(x: String): String = 11 + x
+      }
+      val route = Param[String]("xxx") apply {x => complete(s"$x")}
+      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "11zzz"}
+    }
   }
 
   "OptParam" must {
