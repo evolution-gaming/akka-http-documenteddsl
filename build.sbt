@@ -10,7 +10,7 @@ lazy val project = (Project(artifactId, file("."))
   settings inConfig(ExamplesConfig)(compileBase ++ compileSettings ++ Seq(
   run := Defaults.runTask(fullClasspath in ExamplesConfig, mainClass in run, runner in run).evaluated,
   runMain := Defaults.runMainTask(fullClasspath in ExamplesConfig, runner in run).evaluated))
-  settings buildSettings
+  settings basicSettings
   settings Seq(
     resolvers += Resolver.bintrayRepo("evolutiongaming", "maven"),
     resolvers += Resolver.bintrayRepo("hseeberger", "maven"),
