@@ -1,7 +1,6 @@
 package akka.http.documenteddsl.documentation
 
-import play.api.data.validation.ValidationError
-import play.api.libs.json.{JsError, JsObject, JsResult, JsSuccess}
+import play.api.libs.json._
 
 case class ParamDocumentation(name: String, schema: JsObject, required: Boolean, origin: ParamDocumentation.Origin)
 
@@ -15,7 +14,7 @@ object ParamDocumentation {
       case "form" => JsSuccess(Form)
       case "query" => JsSuccess(Query)
       case "path" => JsSuccess(Path)
-      case _ => JsError(ValidationError(s"unknown: $code"))
+      case _ => JsError(JsonValidationError(s"unknown: $code"))
     }
   }
 }

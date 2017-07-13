@@ -1,7 +1,9 @@
 import java.net.URL
+
 import sbt._
 import sbt.Keys._
 import bintray.BintrayPlugin.autoImport.bintrayOrganization
+import sbtrelease.ReleasePlugin.autoImport.releaseCrossBuild
 
 object BuildSettings {
   val artifactId = "akka-http-documenteddsl"
@@ -15,6 +17,8 @@ object BuildSettings {
     organizationHomepage  := Some(url("http://evolutiongaming.com")),
     bintrayOrganization   := Some("evolutiongaming"),
     scalaVersion          := "2.11.11",
+//    crossScalaVersions    := Seq("2.11.11", "2.12.2"),
+//    releaseCrossBuild     := true,
     licenses              := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))),
     scalacOptions         ++= Seq(
       "-encoding", "UTF-8",
