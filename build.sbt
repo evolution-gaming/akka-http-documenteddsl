@@ -15,6 +15,7 @@ lazy val project = (Project(artifactId, file("."))
     resolvers += Resolver.bintrayRepo("evolutiongaming", "maven"),
     resolvers += Resolver.bintrayRepo("hseeberger", "maven"),
     libraryDependencies ++= Seq(
-      akkaHttpCore, akkaHttp, akkaHttpTestKit,
-      akkaHttpPlayJson, jsonSchema,
+      akkaHttpCore, akkaHttp, akkaHttpTestKit, akkaHttpPlayJson,
+      akkaStream, akkaStreamTestkit,
+      jsonSchema,
       scalaTest, mockito)))
