@@ -2,9 +2,8 @@ package akka.http.documenteddsl
 
 import java.time.LocalDate
 
-import DDirectives._
-import akka.http.scaladsl.server.directives.RouteDirectives
-import documentation._
+import akka.http.documenteddsl.DDirectives._
+import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.MustMatchers._
 import org.scalatest.WordSpec

@@ -86,7 +86,7 @@ case class RouteDocumentation(
     parameters(param :: Nil)
   }
 
-  def parameters(params: List[ParamDocumentation])(implicit as: AutoSchema): RouteDocumentation = {
+  def parameters(params: List[ParamDocumentation]): RouteDocumentation = {
     val joined = (parameters, params) match {
       case (None   , Nil)  => None
       case (None   , y)    => Some(y)
