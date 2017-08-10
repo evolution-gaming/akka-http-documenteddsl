@@ -1,17 +1,14 @@
 package akka.http.documenteddsl.directives
 
-import akka.http.documenteddsl.documentation.{ParamDocumentation, RouteDocumentation}
-import akka.http.scaladsl.model.StatusCodes._
+import akka.http.documenteddsl.documentation.RouteDocumentation
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers._
-import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives._
-import akka.http.scaladsl.unmarshalling._
 import org.coursera.autoschema.AutoSchema
 
 import scala.reflect.ClassTag
-import scala.reflect.runtime.{universe => ru}
 
 trait HeaderDDirectives {
   sealed trait Header[T] extends DDirective1[T]
@@ -25,7 +22,7 @@ trait HeaderDDirectives {
     }
   }
 
-  case class HeaderByType[T <: HttpHeader](implicit ct: ClassTag[T]) extends Header[T] {
+  case class HeaderByType[T <: HttpHeader]()(implicit ct: ClassTag[T]) extends Header[T] {
     def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = {
       w.header(ModeledCompanion.nameFromClass(ct.runtimeClass), required = true, constraints = None)
     }

@@ -1,12 +1,12 @@
 package akka.http.documenteddsl
 
-import DDirectives._
+import akka.http.documenteddsl.DDirectives._
 import akka.http.documenteddsl.documentation._
+import akka.http.scaladsl.model.ContentTypes
 import akka.http.scaladsl.model.headers._
-import akka.http.scaladsl.model.{ContentTypes, HttpHeader}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.WordSpec
 import org.scalatest.MustMatchers._
+import org.scalatest.WordSpec
 
 class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
 

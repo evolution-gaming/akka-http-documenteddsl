@@ -2,7 +2,7 @@ package akka.http.documenteddsl
 
 import akka.http.documenteddsl.directives.RouteDDirectives
 import akka.http.documenteddsl.documentation.Documentation
-import akka.http.scaladsl.server.{Route, RouteConcatenation}
+import akka.http.scaladsl.server.RouteConcatenation
 
 import scala.language.implicitConversions
 

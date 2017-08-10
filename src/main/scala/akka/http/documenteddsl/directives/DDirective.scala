@@ -11,7 +11,7 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.Flow
 import org.coursera.autoschema.AutoSchema
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContextExecutor
 import scala.language.implicitConversions
 
 trait DDirective[L] { self =>
@@ -78,7 +78,7 @@ object DDirective {
     parserSettings:   ParserSettings,
     materializer:     Materializer,
     routingLog:       RoutingLog,
-    executionContext: ExecutionContext = null,
+    executionContext: ExecutionContextExecutor = null,
     rejectionHandler: RejectionHandler = RejectionHandler.default,
     exceptionHandler: ExceptionHandler = null): Flow[HttpRequest, HttpResponse, NotUsed] = Route.handlerFlow(route)
 

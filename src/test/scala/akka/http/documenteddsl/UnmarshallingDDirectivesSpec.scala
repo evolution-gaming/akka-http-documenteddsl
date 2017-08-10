@@ -5,7 +5,7 @@ import java.time.LocalDate
 import akka.http.documenteddsl.directives.UnmarshallingDDirectives._
 import akka.http.documenteddsl.documentation.OutDocumentation._
 import akka.http.documenteddsl.documentation.{JsonSchema, OutDocumentation, RouteDocumentation}
-import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.MustMatchers._
 import org.scalatest.WordSpec

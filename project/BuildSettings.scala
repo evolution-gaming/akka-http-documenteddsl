@@ -16,9 +16,9 @@ object BuildSettings {
     organizationName      := "Evolution Gaming",
     organizationHomepage  := Some(url("http://evolutiongaming.com")),
     bintrayOrganization   := Some("evolutiongaming"),
-    scalaVersion          := "2.11.11",
-//    crossScalaVersions    := Seq("2.11.11", "2.12.2"),
-//    releaseCrossBuild     := true,
+    scalaVersion          := "2.12.3",
+    crossScalaVersions    := Seq("2.11.11", "2.12.3"),
+    releaseCrossBuild     := true,
     licenses              := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))),
     scalacOptions         ++= Seq(
       "-encoding", "UTF-8",
