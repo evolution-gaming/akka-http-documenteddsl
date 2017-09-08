@@ -45,4 +45,19 @@ class ParameterDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalat
     }
   }
 
+  "DefaultParam" must {
+    "be applied to route documentation" in {
+      DefaultParam[String]("xxx","aaa").describe(RouteDocumentation()).parameters mustBe Some(List(ParamDocumentation(
+        name = "xxx",
+        schema = JsonSchema.string,
+        required = false,
+        origin = ParamDocumentation.Origin.Query)))
+    }
+    "be counted during request processing" in {
+      val route = DefaultParam[String]("xxx","aaa") apply {x => complete(s"$x")}
+      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
+      Get("/") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "aaa"}
+    }
+  }
+
 }

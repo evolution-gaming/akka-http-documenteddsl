@@ -47,4 +47,19 @@ class FormFieldDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalat
     }
   }
 
+  "DefaultFormField" must {
+    "be applied to route documentation" in {
+      DefaultFormField[String]("xxx", "aaa").describe(RouteDocumentation()).parameters mustBe Some(List(ParamDocumentation(
+        name = "xxx",
+        schema = JsonSchema.string,
+        required = false,
+        origin = ParamDocumentation.Origin.Form)))
+    }
+    "be counted during request processing" in {
+      val route = DefaultFormField[String]("xxx", "aaa") apply {x => complete(s"$x")}
+      Post("/", FormData("xxx" -> "zzz")) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
+      Post("/", FormData()) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "aaa"}
+    }
+  }
+
 }

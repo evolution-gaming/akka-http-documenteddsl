@@ -47,9 +47,11 @@ import akka.http.documenteddsl.DDirectives._
  - Parameter directives
    - Param
    - OptParam
+   - DefaultParam
  - Form directives
    - FormField
    - OptFormField
+   - DefaultFormField
  - Marshalling directives
    - In
  - Unmarshalling directives
