@@ -106,6 +106,23 @@ object DConjunctionMagnet {
     }
   }
 
+  implicit def fromStandardDirective[L, R]
+    (other: Directive[R])
+    (implicit join: TupleOps.Join[L, R]): DConjunctionMagnet[L] { type Out = DDirective[join.Out] } = {
+
+    val _other: DDirectiveDelegate[R] = new DDirectiveDelegate(other)
+
+    new DConjunctionMagnet[L] {
+      type Out = DDirective[join.Out]
+
+      def apply(underlying: DDirective[L]) =
+        new DDirective[join.Out]() {
+          def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = underlying.describe(_other.describe(w))
+          override def delegate: Directive[join.Out] = (underlying.delegate & _other.delegate).asInstanceOf[Directive[join.Out]]
+        }
+    }
+  }
+
   implicit def fromStandardRoute[L]
     (route: StandardRoute): DConjunctionMagnet[L] { type Out = StandardRoute } = {
 
