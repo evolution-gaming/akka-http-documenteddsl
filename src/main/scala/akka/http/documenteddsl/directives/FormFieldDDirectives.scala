@@ -26,6 +26,14 @@ trait FormFieldDDirectives {
       formField(name.as(su.fsu).?)
     }
   }
+
+  case class DefaultFormField[T : ru.TypeTag](name: String, default: T)(implicit su: PreprocessedFromStringUnmarshaller[T]) extends DDirective1[T] {
+    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = w.parameter[T](name, required = false, origin = ParamDocumentation.Origin.Form)
+    def delegate: Directive1[T] = {
+      import FormFieldDirectives._
+      formField(name.as(su.fsu).?(default))
+    }
+  }
 }
 
 object FormFieldDDirectives extends FormFieldDDirectives
