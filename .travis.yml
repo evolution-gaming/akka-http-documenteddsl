@@ -5,8 +5,8 @@ sudo: false
 language: scala
 
 scala:
-  - 2.11.11
-  - 2.12.3
+  - 2.11.12
+  - 2.12.7
 
 jdk: oraclejdk8
 
@@ -14,9 +14,18 @@ script: sbt ++$TRAVIS_SCALA_VERSION clean coverage test
 
 after_success: sbt ++$TRAVIS_SCALA_VERSION coverageReport coveralls
 
-#notifications:
-#  slack:
-#    on_success: never
-#    on_failure: always
-#    rooms:
-#      secure: "ZkG0Ru1NcqJdGuf6gesro4xhAwU/zYCrU3FUOksYMtsdhd+SbVwLNXLlcBXZRQmsPKOPfC6McEyO6jc5Y05SXBkTNBzOw8Fe/bxEbBKYnxLQY7QrimfMstDu5Rz7xksNGDGiVxwXR+OtF3ixS6hzCR1rrHDrYmFQ/lPMGU+kyTJ54Vu81CBrhNbbuhswMx2N+QFLQDv090o8PgXa6YJJRo4k2qReQcZ6h7cCMVgfqzuJda/kmShl6HnOU4RjsIT5TLYWobLFdTJzPQdjtpASdwJyu2LAjF72BeO5jlNNp5eufrkRCaFbSt+NEYXV63DQqSb0QrPmur/n8M4RgumReDxNK3wPqrL4TanLsMcmTMEzVt2/GKJvt1HEila9HdLiZBhhDjV5NaekEbMmxh9azwUN2xpP6wlHbe3TkZsnly1r5V62hKePXP61Gatlp1HIXIGvfyLCDDyrvVzy1K+EELi3qDD865xgMJFB8BfRth6DUTzuc46Sqv/Iq03edp6VVUh9LUzrp4pU2BLsjMHU/aii+e5eoeqHLOzTphkZByg07z2zv9Jk27vgR1PO4G+LVV4l3RJVT8bU4mzV5ONX4k9Ss2UGaMQbvtao0hQGAo6XdRDyh3NfJVq/YG+vcDJZjOOsaUxlZRv2XWFpX6eiEu3sxYCz3kscmV0359HDeQ8="
+notifications:
+  slack:
+    on_success: never
+    on_failure: always
+    rooms:
+      secure: oamsQtiJwt+Mo/qnyVW676CI8KYDCbskj+v0AeghS/ILBcb3w0VQTZMfU3BcAHaBVyvTe9saRar8bBhaZ4IuQ/B41jAHSqnu94UGgGuhy6lIYnmgtS/82VG+6Hdlxoa+fNyKrJK72IxJAvq1+tAPLxj/Z9ocBOmP1PEG0rgrCxwS+juG7uRmsSDO4uu3R5IkPwVCixlH3oNjiBaYBW12JyQiZEu2wV/SUDGZgIuo+DHn1sNS/D2TSdjht/IP/q90ohuKoOmbAYDq20w3RK1TFKdUw7MoONsV/uKadiz3Bk87qefJSWQTpXOZTaEJcxLDIAgaN0n0Uj7hcmm04KNnJuUxqP08bOxKp8yxgowc0UzGpUgXAUSIlPXNc8p0Ldx76SZaxNQYKPBPL1Yk1Pf/sKDr/Xcg6wt37GdVCyiaSRlvJcTZ0GdVYieC3VyFIE3UlZTcMZEjdoEwiOKmg+cTULNHQGyPbp0IopIbIKMOa3j1nfXLS7ZTuJZuEfr9QcAa7dAjVSo+b/C++OLta48FIxwRaxbySd8B73278kqrn2xnhAAyPXScmSt9mfe+LLiZaN1k4y+X/Td+S1QR96cPkxZw4+rv8ZGOGvokJVZSayfo210I3PsulggCd1xvLhYbvM7kfdTfJH0rgN592gvcvNnSNQqIdE1XG+Y6M6Rz/Ns="
+
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt
+
+before_cache:
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+- find $HOME/.sbt        -name "*.lock"               -print -delete
