@@ -6,7 +6,7 @@ language: scala
 
 scala:
   - 2.11.12
-  - 2.12.7
+  - 2.12.8
 
 jdk: oraclejdk8
 
@@ -19,7 +19,7 @@ notifications:
     on_success: never
     on_failure: always
     rooms:
-      secure: oamsQtiJwt+Mo/qnyVW676CI8KYDCbskj+v0AeghS/ILBcb3w0VQTZMfU3BcAHaBVyvTe9saRar8bBhaZ4IuQ/B41jAHSqnu94UGgGuhy6lIYnmgtS/82VG+6Hdlxoa+fNyKrJK72IxJAvq1+tAPLxj/Z9ocBOmP1PEG0rgrCxwS+juG7uRmsSDO4uu3R5IkPwVCixlH3oNjiBaYBW12JyQiZEu2wV/SUDGZgIuo+DHn1sNS/D2TSdjht/IP/q90ohuKoOmbAYDq20w3RK1TFKdUw7MoONsV/uKadiz3Bk87qefJSWQTpXOZTaEJcxLDIAgaN0n0Uj7hcmm04KNnJuUxqP08bOxKp8yxgowc0UzGpUgXAUSIlPXNc8p0Ldx76SZaxNQYKPBPL1Yk1Pf/sKDr/Xcg6wt37GdVCyiaSRlvJcTZ0GdVYieC3VyFIE3UlZTcMZEjdoEwiOKmg+cTULNHQGyPbp0IopIbIKMOa3j1nfXLS7ZTuJZuEfr9QcAa7dAjVSo+b/C++OLta48FIxwRaxbySd8B73278kqrn2xnhAAyPXScmSt9mfe+LLiZaN1k4y+X/Td+S1QR96cPkxZw4+rv8ZGOGvokJVZSayfo210I3PsulggCd1xvLhYbvM7kfdTfJH0rgN592gvcvNnSNQqIdE1XG+Y6M6Rz/Ns="
+      secure: "oamsQtiJwt+Mo/qnyVW676CI8KYDCbskj+v0AeghS/ILBcb3w0VQTZMfU3BcAHaBVyvTe9saRar8bBhaZ4IuQ/B41jAHSqnu94UGgGuhy6lIYnmgtS/82VG+6Hdlxoa+fNyKrJK72IxJAvq1+tAPLxj/Z9ocBOmP1PEG0rgrCxwS+juG7uRmsSDO4uu3R5IkPwVCixlH3oNjiBaYBW12JyQiZEu2wV/SUDGZgIuo+DHn1sNS/D2TSdjht/IP/q90ohuKoOmbAYDq20w3RK1TFKdUw7MoONsV/uKadiz3Bk87qefJSWQTpXOZTaEJcxLDIAgaN0n0Uj7hcmm04KNnJuUxqP08bOxKp8yxgowc0UzGpUgXAUSIlPXNc8p0Ldx76SZaxNQYKPBPL1Yk1Pf/sKDr/Xcg6wt37GdVCyiaSRlvJcTZ0GdVYieC3VyFIE3UlZTcMZEjdoEwiOKmg+cTULNHQGyPbp0IopIbIKMOa3j1nfXLS7ZTuJZuEfr9QcAa7dAjVSo+b/C++OLta48FIxwRaxbySd8B73278kqrn2xnhAAyPXScmSt9mfe+LLiZaN1k4y+X/Td+S1QR96cPkxZw4+rv8ZGOGvokJVZSayfo210I3PsulggCd1xvLhYbvM7kfdTfJH0rgN592gvcvNnSNQqIdE1XG+Y6M6Rz/Ns="
 
 cache:
   directories:
