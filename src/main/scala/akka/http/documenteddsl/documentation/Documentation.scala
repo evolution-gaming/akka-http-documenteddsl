@@ -38,7 +38,8 @@ object Documentation {
   }
 
   private case class RoutePointer(category: List[String], uid: String, title: String) {
-    private def findOrCreateSubTopic(node: TopicNode, label: String)(f: TopicNode => Unit): TopicNode = {
+
+    private def findOrCreateSubTopic[A](node: TopicNode, label: String)(f: TopicNode => A): TopicNode = {
       val subOpt = node.children collectFirst {
         case x: TopicNode if x.label == label => x
       }

@@ -42,7 +42,8 @@ object DDirective {
     */
   def apply[T: Tuple](
     f: (T ⇒ Route) ⇒ Route,
-    writer: RouteDocumentation => RouteDocumentation = identity): DDirective[T] = new DDirectiveDelegate(Directive(f))
+    writer: RouteDocumentation => RouteDocumentation = identity
+  ): DDirective[T] = new DDirectiveDelegate(Directive(f), writer)
 
 
   private def writer[L](innerRoute: DRoute, d: DDirective[L])(doc: Documentation)(implicit as: AutoSchema): Documentation = {

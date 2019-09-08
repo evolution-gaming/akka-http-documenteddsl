@@ -16,19 +16,8 @@ object BuildSettings {
     organizationName      := "Evolution Gaming",
     organizationHomepage  := Some(url("http://evolutiongaming.com")),
     bintrayOrganization   := Some("evolutiongaming"),
-    scalaVersion          := crossScalaVersions.value.last,
-    crossScalaVersions    := Seq("2.11.12", "2.12.8"),
+    scalaVersion          := crossScalaVersions.value.head,
+    crossScalaVersions    := Seq(/*"2.13.0", requires https://github.com/sauldhernandez/autoschema against 2.13*/"2.12.9"),
     releaseCrossBuild     := true,
-    licenses              := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))),
-    scalacOptions         ++= Seq(
-      "-encoding", "UTF-8",
-      "-feature",
-      "-unchecked",
-      "-deprecation",
-      "-Xfatal-warnings",
-      "-Xlint",
-      "-Yno-adapted-args",
-      "-Ywarn-dead-code",
-      "-Ywarn-numeric-widen",
-      "-Xfuture"))
+    licenses              := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))))
 }

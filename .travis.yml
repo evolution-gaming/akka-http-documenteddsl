@@ -4,11 +4,12 @@ sudo: false
 
 language: scala
 
-scala:
-  - 2.11.12
-  - 2.12.8
+jdk:
+  - openjdk11
 
-jdk: oraclejdk8
+scala:
+#  - 2.13.0 requires https://github.com/sauldhernandez/autoschema against 2.13
+  - 2.12.9
 
 script: sbt ++$TRAVIS_SCALA_VERSION clean coverage test
 
