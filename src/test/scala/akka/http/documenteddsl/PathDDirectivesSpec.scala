@@ -5,11 +5,12 @@ import java.time.LocalDate
 import akka.http.documenteddsl.DDirectives._
 import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import matchers.must.Matchers._
 import play.api.libs.json.Json
+import org.scalatest.matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class PathDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class PathDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
 
   "PathPrefix" must {
     "be applied for 1 segment" in {

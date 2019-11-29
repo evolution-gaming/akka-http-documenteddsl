@@ -3,10 +3,11 @@ package akka.http.documenteddsl
 import DDirectives._
 import akka.http.documenteddsl.documentation.RouteDocumentation
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import matchers.must.Matchers._
+import org.scalatest.matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class MethodDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class MethodDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
 
   private def check(m: MethodDDirective): Unit = m.toString must {
     "be applied to documentation" in {
