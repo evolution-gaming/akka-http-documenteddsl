@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  val AkkaHttpVersion = "10.1.10"
+  val AkkaHttpVersion = "10.1.11"
   val AkkaVersion = "2.6.1"
   val akkaHttpCore      = "com.typesafe.akka"   %% "akka-http-core"       % AkkaHttpVersion
   val akkaHttp          = "com.typesafe.akka"   %% "akka-http"            % AkkaHttpVersion
