@@ -2,10 +2,11 @@ package akka.http.documenteddsl
 
 import akka.http.documenteddsl.directives.DocumentationDDirectives._
 import akka.http.documenteddsl.documentation.RouteDocumentation
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import matchers.must.Matchers._
+import org.scalatest.matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class DocumentationDDirectivesSpec extends WordSpec with DDirectivesSpec {
+class DocumentationDDirectivesSpec extends AnyWordSpec with DDirectivesSpec {
 
   "Category" must {
     "be applied for 1 segment" in {
