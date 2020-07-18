@@ -11,5 +11,5 @@ object Dependencies {
   val akkaHttpPlayJson  = "com.evolutiongaming" %% "akka-http-play-json"  % "0.1.13"
   val jsonSchema        = "com.sauldhernandez"  %% "autoschema"           % "1.0.4"
   val scalaTest         = "org.scalatest"       %% "scalatest"            % "3.0.8" % Test
-  val mockito           = "org.mockito"          % "mockito-core"         % "3.4.2" % Test
+  val mockito           = "org.mockito"          % "mockito-core"         % "3.4.3" % Test
 }
