@@ -5,10 +5,11 @@ import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.model.ContentTypes
 import akka.http.scaladsl.model.headers._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import matchers.must.Matchers._
+import org.scalatest.matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class HeaderDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
 
   "Header" must {
     "be applied to route documentation" in {
