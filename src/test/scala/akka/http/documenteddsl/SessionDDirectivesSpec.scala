@@ -6,10 +6,11 @@ import akka.http.javadsl.server.AuthorizationFailedRejection
 import akka.http.scaladsl.model.headers.Cookie
 import akka.http.scaladsl.server.Directive1
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import matchers.must.Matchers._
+import org.scalatest.matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class SessionDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class SessionDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
   import SessionDDirectivesSpec._
 
   "Session" must {
