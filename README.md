@@ -1,6 +1,6 @@
 # AKKA-HTTP-DOCUMENTEDDSL
 
-![CI](https://github.com/evolution-gaming/akka-http-documenteddsl/workflows/CI/badge.svg)
+[![CI](https://github.com/evolution-gaming/akka-http-documenteddsl/workflows/CI/badge.svg)](https://github.com/evolution-gaming/akka-http-documenteddsl/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/evolution-gaming/akka-http-documenteddsl/badge.svg)](https://coveralls.io/github/evolution-gaming/akka-http-documenteddsl)
 [![version](https://api.bintray.com/packages/evolutiongaming/maven/akka-http-documenteddsl/images/download.svg) ](https://bintray.com/evolutiongaming/maven/akka-http-documenteddsl/_latestVersion)
 
