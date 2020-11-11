@@ -21,12 +21,12 @@ class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalatest
         required = true,
         constraints = Some(Set("A", "B")))))
 
-      Header('CustomHeader).describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
+      Header(Symbol("CustomHeader")).describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
         name = "CustomHeader",
         required = true,
         constraints = None)))
 
-      Header('CustomHeader, "A", "B").describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
+      Header(Symbol("CustomHeader"), "A", "B").describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
         name = "CustomHeader",
         required = true,
         constraints = Some(Set("A", "B")))))
@@ -74,12 +74,12 @@ class HeaderDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalatest
         required = false,
         constraints = Some(Set("A", "B")))))
 
-      OptHeader('CustomHeader).describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
+      OptHeader(Symbol("CustomHeader")).describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
         name = "CustomHeader",
         required = false,
         constraints = None)))
 
-      OptHeader('CustomHeader, "A", "B").describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
+      OptHeader(Symbol("CustomHeader"), "A", "B").describe(RouteDocumentation()).headers mustBe Some(List(HeaderDocumentation(
         name = "CustomHeader",
         required = false,
         constraints = Some(Set("A", "B")))))

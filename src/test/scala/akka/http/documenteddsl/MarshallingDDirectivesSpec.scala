@@ -38,7 +38,7 @@ class MarshallingDDirectivesSpec extends WordSpec with DDirectivesSpec with Scal
     "be preprocessed" in {
       implicit val sanitize = new Preprocess[JsValue] {
         def transform(json: JsValue): JsValue = json match {
-          case JsString(x)    => JsString(11 + x)
+          case JsString(x)    => JsString(11.toString + x)
           case JsNumber(x)    => JsNumber(11 + x)
           case arr: JsArray   => JsArray(arr.value map transform)
           case obj: JsObject  => JsObject(obj.fields map {case (k, v) => (k, transform(v))})
