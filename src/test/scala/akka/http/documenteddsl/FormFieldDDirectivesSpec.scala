@@ -24,7 +24,7 @@ class FormFieldDDirectivesSpec extends WordSpec with DDirectivesSpec with Scalat
     }
     "be preprocessed" in {
       implicit val preprocess = new Preprocess[String] {
-        override def apply(x: String): String = 11 + x
+        override def apply(x: String): String = 11.toString + x
       }
       val route = FormField[String]("xxx") apply {x => complete(s"$x")}
       val formData = FormData("xxx" -> "zzz")

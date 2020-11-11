@@ -22,7 +22,7 @@ case class Documentation(routes: List[RouteDocumentation] = List.empty) {
 object Documentation {
   sealed trait Node extends Product {
     def label: String
-    def children: Seq[Node]
+    def children: scala.collection.Seq[Node]
     def dump(i: Int = 0): String = {
       val sb = new StringBuilder
       sb.append(" " * i).append(label).append(" ").append(productPrefix).append("\n")

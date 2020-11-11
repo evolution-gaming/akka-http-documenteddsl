@@ -18,11 +18,11 @@ trait DDirective[L] { self =>
   def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation
   def &(magnet: DConjunctionMagnet[L]): magnet.Out = magnet(this)
   def delegate: Directive[L]
-  def map[R](f: L ⇒ R)(implicit tupler: Tupler[R], as: AutoSchema): DDirective[tupler.Out] = new DDirectiveDelegate(
+  def map[R](f: L => R)(implicit tupler: Tupler[R], as: AutoSchema): DDirective[tupler.Out] = new DDirectiveDelegate(
     dir = (delegate tmap f).asInstanceOf[Directive[tupler.Out]],
     writer = self.describe
   )
-  def flatMap[R: Tuple](f: L ⇒ Directive[R])(implicit as: AutoSchema): DDirective[R] = new DDirectiveDelegate(
+  def flatMap[R: Tuple](f: L => Directive[R])(implicit as: AutoSchema): DDirective[R] = new DDirectiveDelegate(
     dir = delegate tflatMap f,
     writer = self.describe
   )
@@ -41,7 +41,7 @@ object DDirective {
     * Constructs a directive from a function literal.
     */
   def apply[T: Tuple](
-    f: (T ⇒ Route) ⇒ Route,
+    f: (T => Route) => Route,
     writer: RouteDocumentation => RouteDocumentation = identity
   ): DDirective[T] = new DDirectiveDelegate(Directive(f), writer)
 
@@ -135,7 +135,7 @@ object DConjunctionMagnet {
   }
 
   implicit def fromRouteGenerator[T, R <: Route]
-    (generator: T ⇒ R): DConjunctionMagnet[Unit] { type Out = RouteGenerator[T] } = {
+    (generator: T => R): DConjunctionMagnet[Unit] { type Out = RouteGenerator[T] } = {
 
     new DConjunctionMagnet[Unit] {
       type Out = RouteGenerator[T]
