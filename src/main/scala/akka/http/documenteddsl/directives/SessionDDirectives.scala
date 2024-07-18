@@ -8,8 +8,6 @@ import akka.http.scaladsl.server.directives.RouteDirectives.{redirect => akkaRed
 import akka.http.scaladsl.server.{Directive, Directive1}
 import org.coursera.autoschema.AutoSchema
 
-import scala.language.implicitConversions
-
 trait SessionDDirectives {
   import SessionDDirectives._
 

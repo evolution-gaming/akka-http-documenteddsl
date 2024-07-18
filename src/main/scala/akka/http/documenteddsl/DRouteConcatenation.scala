@@ -4,8 +4,6 @@ import akka.http.documenteddsl.directives.RouteDDirectives
 import akka.http.documenteddsl.documentation.Documentation
 import akka.http.scaladsl.server.RouteConcatenation
 
-import scala.language.implicitConversions
-
 trait DRouteConcatenation {
 
   implicit def _enhanceRouteWithConcatenation(route: DRoute): DRouteConcatenation.DRouteWithConcatenation =

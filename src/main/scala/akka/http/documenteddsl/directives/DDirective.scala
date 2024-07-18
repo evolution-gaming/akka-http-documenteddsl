@@ -12,7 +12,6 @@ import akka.stream.scaladsl.Flow
 import org.coursera.autoschema.AutoSchema
 
 import scala.concurrent.ExecutionContextExecutor
-import scala.language.implicitConversions
 
 trait DDirective[L] { self =>
   def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation

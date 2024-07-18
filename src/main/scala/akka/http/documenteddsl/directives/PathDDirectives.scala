@@ -8,7 +8,6 @@ import akka.http.scaladsl.server.{Directive, Directive0, PathMatcher, PathMatche
 import org.coursera.autoschema.AutoSchema
 import play.api.libs.json.{JsObject, Json}
 
-import scala.language.implicitConversions
 import scala.reflect.runtime.{universe => ru}
 import scala.util.matching.Regex
 

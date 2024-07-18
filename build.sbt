@@ -18,8 +18,6 @@ lazy val project = (Project(artifactId, file("."))
   settings alias
   settings basicSettings
   settings Seq(
-//    resolvers += Resolver.bintrayRepo("evolutiongaming", "maven"),
-//    resolvers += Resolver.bintrayRepo("hseeberger", "maven"),
     libraryDependencies ++= Seq(
       akkaHttpCore, akkaHttp, akkaHttpTestKit, akkaHttpPlayJson,
       akkaStream, akkaStreamTestkit,
