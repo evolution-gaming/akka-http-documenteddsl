@@ -10,6 +10,6 @@ object Dependencies {
   val akkaStreamTestkit = "com.typesafe.akka"   %% "akka-stream-testkit"  % AkkaVersion % Test
   val akkaHttpPlayJson  = "com.evolutiongaming" %% "akka-http-play-json"  % "0.3.0"
   val jsonSchema        = "com.evolutiongaming" %% "autoschema"           % "1.0.5"
-  val scalaTest         = "org.scalatest"       %% "scalatest"            % "3.0.8" % Test
+  val scalaTest         = "org.scalatest"       %% "scalatest"            % "3.2.20" % Test
   val mockito           = "org.mockito"          % "mockito-core"         % "3.4.4" % Test
 }

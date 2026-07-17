@@ -3,10 +3,10 @@ package akka.http.documenteddsl
 import DDirectives._
 import akka.http.documenteddsl.documentation.{JsonSchema, ParamDocumentation, RouteDocumentation}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.must.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class ParameterDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class ParameterDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
 
   "Param" must {
     "be applied to route documentation" in {

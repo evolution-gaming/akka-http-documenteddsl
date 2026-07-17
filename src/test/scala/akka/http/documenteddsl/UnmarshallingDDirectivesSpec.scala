@@ -7,11 +7,11 @@ import akka.http.documenteddsl.documentation.OutDocumentation._
 import akka.http.documenteddsl.documentation.{JsonSchema, OutDocumentation, RouteDocumentation}
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.must.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{Format, Json}
 
-class UnmarshallingDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class UnmarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
   import UnmarshallingDDirectivesSpec._
 
   "Out" must {

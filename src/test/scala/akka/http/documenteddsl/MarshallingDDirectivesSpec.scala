@@ -5,11 +5,11 @@ import java.time.LocalDate
 import DDirectives._
 import akka.http.documenteddsl.documentation.{InDocumentation, JsonSchema, RouteDocumentation}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.MustMatchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.must.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json._
 
-class MarshallingDDirectivesSpec extends WordSpec with DDirectivesSpec with ScalatestRouteTest {
+class MarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
   import MarshallingDDirectivesSpec._
   import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
 
