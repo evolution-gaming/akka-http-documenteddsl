@@ -15,11 +15,11 @@ trait DocumentationJson {
     }
   }
 
-  implicit val originWrites = new Writes[Origin]() {
+  implicit val originWrites: Writes[Origin] = new Writes[Origin]() {
     override def writes(o: Origin): JsValue = JsString(o.productPrefix.toLowerCase)
   }
   
-  implicit def pathWrites = new Writes[PathDocumentation]() {
+  implicit def pathWrites: Writes[PathDocumentation] = new Writes[PathDocumentation]() {
     override def writes(o: PathDocumentation): JsValue = JsString(o.render())
   }
 

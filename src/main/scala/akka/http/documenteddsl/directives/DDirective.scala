@@ -1,17 +1,14 @@
 package akka.http.documenteddsl.directives
 
 import akka.NotUsed
+import akka.actor.ActorSystem
 import akka.http.documenteddsl._
 import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.util.{ApplyConverter, Tuple, TupleOps, Tupler}
-import akka.http.scaladsl.settings.{ParserSettings, RoutingSettings}
-import akka.stream.Materializer
 import akka.stream.scaladsl.Flow
 import org.coursera.autoschema.AutoSchema
-
-import scala.concurrent.ExecutionContextExecutor
 
 trait DDirective[L] { self =>
   def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation
@@ -74,13 +71,9 @@ object DDirective {
   }
 
   implicit def documentedRoute2HandlerFlow(route: DRoute)(implicit
-    routingSettings:  RoutingSettings,
-    parserSettings:   ParserSettings,
-    materializer:     Materializer,
-    routingLog:       RoutingLog,
-    executionContext: ExecutionContextExecutor = null,
-    rejectionHandler: RejectionHandler = RejectionHandler.default,
-    exceptionHandler: ExceptionHandler = null): Flow[HttpRequest, HttpResponse, NotUsed] = Route.handlerFlow(route)
+    actorSystem: ActorSystem,
+  ): Flow[HttpRequest, HttpResponse, NotUsed] =
+      Route.toFlow(route)
 
 }
 
