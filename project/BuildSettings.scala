@@ -15,7 +15,7 @@ object BuildSettings {
     organizationName      := "Evolution",
     organizationHomepage  := Some(url("https://evolution.com")),
     scalaVersion          := crossScalaVersions.value.head,
-    crossScalaVersions    := Seq("2.13.18", "2.12.12"),
+    crossScalaVersions    := Seq("2.13.18"),
     releaseCrossBuild     := true,
     publishTo             := Some(Resolver.evolutionReleases),
     licenses              := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))))
