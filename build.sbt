@@ -20,6 +20,9 @@ lazy val project = (Project(artifactId, file("."))
   )
   .settings(alias)
   .settings(basicSettings)
+  .settings(
+    publishTo := Some(Resolver.evolutionReleases)
+  )
   .settings(Seq(
     libraryDependencies ++= Seq(
       akkaHttpCore,
