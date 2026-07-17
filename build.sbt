@@ -11,15 +11,24 @@ val alias: Seq[sbt.Def.Setting[_]] =
     addCommandAlias("build", "+all compile test")
 
 lazy val project = (Project(artifactId, file("."))
-  configs ExamplesConfig
-  settings inConfig(ExamplesConfig)(compileBase ++ compileSettings ++ Seq(
-  run := Defaults.runTask(fullClasspath in ExamplesConfig, mainClass in run, runner in run).evaluated,
-  runMain := Defaults.runMainTask(fullClasspath in ExamplesConfig, runner in run).evaluated))
-  settings alias
-  settings basicSettings
-  settings Seq(
+  .configs(ExamplesConfig)
+  .settings (
+    inConfig(ExamplesConfig)(compileBase ++ compileSettings ++ Seq(
+      run := Defaults.runTask(ExamplesConfig / fullClasspath , run / mainClass , run / runner).evaluated,
+      runMain := Defaults.runMainTask(ExamplesConfig / fullClasspath, run / runner).evaluated)
+    ),
+  )
+  .settings(alias)
+  .settings(basicSettings)
+  .settings(Seq(
     libraryDependencies ++= Seq(
-      akkaHttpCore, akkaHttp, akkaHttpTestKit, akkaHttpPlayJson,
-      akkaStream, akkaStreamTestkit,
+      akkaHttpCore,
+      akkaHttp,
+      akkaHttpTestKit,
+      akkaHttpPlayJson,
+      akkaStream,
+      akkaStreamTestkit,
       jsonSchema,
-      scalaTest, mockito)))
+      scalaTest,
+      mockito))),
+  )
