@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/evolution-gaming/akka-http-documenteddsl/workflows/CI/badge.svg)](https://github.com/evolution-gaming/akka-http-documenteddsl/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/evolution-gaming/akka-http-documenteddsl/badge.svg)](https://coveralls.io/github/evolution-gaming/akka-http-documenteddsl)
-[![version](https://api.bintray.com/packages/evolutiongaming/maven/akka-http-documenteddsl/images/download.svg) ](https://bintray.com/evolutiongaming/maven/akka-http-documenteddsl/_latestVersion)
 
 ## The Problem
  Want to provide [Swaggerrish](http://swagger.io/) api documentation of your app? Or [RAML](http://raml.org/)?
@@ -221,6 +220,6 @@ GET http://localhost:8080/api.json/14906C3B8B40240130BFA42E
 ## Setup
 **Sbt**
 ```scala
-resolvers += Resolver.bintrayRepo("evolutiongaming", "maven")
-libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "_latestVersion"
+resolvers += "evolution" at "https://evolution.jfrog.io/artifactory/public"
+libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "0.4.0"
 ```
