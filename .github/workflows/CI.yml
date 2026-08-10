@@ -16,12 +16,12 @@ jobs:
           - 2.13.18
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: coursier/cache-action@v6
+      - uses: coursier/cache-action@v8
 
       - name: setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
