@@ -1,8 +1,7 @@
 import akka.actor.ActorSystem
+import akka.http.documenteddsl.documentation._
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
-
-import akka.http.documenteddsl.documentation._
 import akka.stream.ActorMaterializer
 
 import scala.concurrent.Future
@@ -23,8 +22,8 @@ object ExampleMain extends App {
   }
 
   for {
-    port  <- Http().bindAndHandle(routes, "localhost", 8080)
-    _     <- Future {
+    port <- Http().bindAndHandle(routes, "localhost", 8080)
+    _ <- Future {
       println(
         s"""Example App is available at http://localhost:8080
            |
@@ -41,10 +40,11 @@ object ExampleMain extends App {
            |  GET     http://localhost:8080/api.json/x // specified api route
            |
            |Press RETURN to stop...
-         """.stripMargin)
+         """.stripMargin,
+      )
       io.StdIn.readLine()
     }
-    _     <- port.unbind()
+    _ <- port.unbind()
   } { system.terminate() }
 
 }

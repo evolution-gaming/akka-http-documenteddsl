@@ -9,15 +9,17 @@ import play.api.libs.json.{JsError, JsValue, Json, Reads}
 
 class PreprocessedFromStringUnmarshaller[T](sanitize: Preprocess[String], _fsu: FromStringUnmarshaller[T]) {
   implicit val fsu: FromStringUnmarshaller[T] = Unmarshaller withMaterializer {
-    implicit ec =>
-      implicit mat =>
-        string =>
-          _fsu(sanitize(string))
+    implicit ec => implicit mat => string =>
+      _fsu(sanitize(string))
   }
 }
 
 object PreprocessedFromStringUnmarshaller {
-  implicit def unmarshaller[T](implicit sanitize: Preprocess[String] = Preprocess.identity, fsu: FromStringUnmarshaller[T]): PreprocessedFromStringUnmarshaller[T] = {
+  implicit def unmarshaller[T](
+    implicit
+    sanitize: Preprocess[String] = Preprocess.identity,
+    fsu: FromStringUnmarshaller[T],
+  ): PreprocessedFromStringUnmarshaller[T] = {
     new PreprocessedFromStringUnmarshaller(sanitize, fsu)
   }
 }
@@ -28,7 +30,7 @@ class PreprocessedFromEntityUnmarshaller[T](sanitize: Preprocess[JsValue], reads
       .forContentTypes(`application/json`)
       .mapWithCharset {
         case (ByteString.empty, _) => throw Unmarshaller.NoContentException
-        case (data, charset)       => data.decodeString(charset.nioCharset.name)
+        case (data, charset) => data.decodeString(charset.nioCharset.name)
       }
 
   implicit val fsu: FromEntityUnmarshaller[T] = jsonStringUnmarshaller map { data =>
@@ -41,7 +43,11 @@ class PreprocessedFromEntityUnmarshaller[T](sanitize: Preprocess[JsValue], reads
 }
 
 object PreprocessedFromEntityUnmarshaller {
-  implicit def unmarshaller[T](implicit sanitize: Preprocess[JsValue] = Preprocess.identity, reads: Reads[T]): PreprocessedFromEntityUnmarshaller[T] = {
+  implicit def unmarshaller[T](
+    implicit
+    sanitize: Preprocess[JsValue] = Preprocess.identity,
+    reads: Reads[T],
+  ): PreprocessedFromEntityUnmarshaller[T] = {
     new PreprocessedFromEntityUnmarshaller(sanitize, reads)
   }
 }

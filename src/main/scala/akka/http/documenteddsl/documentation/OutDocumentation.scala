@@ -7,7 +7,8 @@ import play.api.libs.json.{JsObject, JsValue}
 
 case class OutDocumentation(
   success: List[Success] = Nil,
-  failure: List[Failure] = Nil) {
+  failure: List[Failure] = Nil,
+) {
   def :+(r: Payload): OutDocumentation = r match {
     case r: Success => copy(success = success :+ r)
     case r: Failure => copy(failure = failure :+ r)
@@ -19,13 +20,18 @@ object OutDocumentation {
   object Status {
     def apply(statusCode: StatusCode): Status = Status(
       statusCode.intValue,
-      statusCode.reason)
+      statusCode.reason,
+    )
   }
 
   sealed trait Payload
   object Payload {
-    case class Success(status: Status, contentType: String, schema: JsObject, example: Option[JsValue]) extends Payload
+    case class Success(
+      status: Status,
+      contentType: String,
+      schema: JsObject,
+      example: Option[JsValue],
+    ) extends Payload
     case class Failure(status: Status, contentType: Option[String], description: Option[String]) extends Payload
   }
 }
-

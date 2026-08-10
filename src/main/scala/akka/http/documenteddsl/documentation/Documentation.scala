@@ -26,7 +26,7 @@ object Documentation {
     def dump(i: Int = 0): String = {
       val sb = new StringBuilder
       sb.append(" " * i).append(label).append(" ").append(productPrefix).append("\n")
-      sb.append(children map {_ dump i + 2} mkString "")
+      sb.append(children map { _ dump i + 2 } mkString "")
       sb.toString()
     }
   }
@@ -55,21 +55,22 @@ object Documentation {
       node
     }
     def merge(toc: TopicNode): TopicNode = category match {
-      case head :: Nil  => findOrCreateSubTopic(toc, head) {_ :+ RouteNode(title, uid)}
-      case head :: tail => findOrCreateSubTopic(toc, head) {RoutePointer(tail, uid, title) merge _}
-      case Nil          => toc
+      case head :: Nil => findOrCreateSubTopic(toc, head) { _ :+ RouteNode(title, uid) }
+      case head :: tail => findOrCreateSubTopic(toc, head) { RoutePointer(tail, uid, title) merge _ }
+      case Nil => toc
     }
   }
 
   private object RoutePointer {
     def apply(route: RouteDocumentation): RoutePointer = RoutePointer(
-      category  = route.category getOrElse List.empty,
-      uid       = route.uid,
-      title     = route.title getOrElse "Untitled")
+      category = route.category getOrElse List.empty,
+      uid = route.uid,
+      title = route.title getOrElse "Untitled",
+    )
   }
   private def computeToc(routes: List[RouteDocumentation]): Node = {
     val pointers = routes map RoutePointer.apply
-    pointers.foldRight(TopicNode("__")) {_ merge _}
+    pointers.foldRight(TopicNode("__")) { _ merge _ }
   }
 
 }

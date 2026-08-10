@@ -22,7 +22,7 @@ object DRouteConcatenation {
       new DRoute(concatenated) {
         override def selfDescribe(initial: Documentation): Documentation = {
           val withRight = right selfDescribe Documentation()
-          val withLeft  = left  selfDescribe Documentation()
+          val withLeft = left selfDescribe Documentation()
 
           Documentation(initial.routes ++ withLeft.routes ++ withRight.routes)
         }

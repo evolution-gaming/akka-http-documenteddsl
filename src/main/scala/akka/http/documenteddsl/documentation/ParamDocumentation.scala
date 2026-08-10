@@ -2,7 +2,12 @@ package akka.http.documenteddsl.documentation
 
 import play.api.libs.json._
 
-case class ParamDocumentation(name: String, schema: JsObject, required: Boolean, origin: ParamDocumentation.Origin)
+case class ParamDocumentation(
+  name: String,
+  schema: JsObject,
+  required: Boolean,
+  origin: ParamDocumentation.Origin,
+)
 
 object ParamDocumentation {
   sealed trait Origin extends Product

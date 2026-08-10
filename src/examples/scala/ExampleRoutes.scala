@@ -1,54 +1,55 @@
-import java.util.UUID
-
-import akka.http.documenteddsl.DDirectives._
-import akka.http.documenteddsl.documentation.DocumentedTypeMappings
-import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
-import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
-import org.coursera.autoschema.AutoSchema
-import play.api.libs.json.Json
 import ExampleResource._
 import ExampleResourceJson._
+import akka.http.documenteddsl.DDirectives._
+import akka.http.documenteddsl.documentation.DocumentedTypeMappings
+import akka.http.scaladsl.marshallers.playjson.PlayJsonSupport._
+import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
+import org.coursera.autoschema.AutoSchema
+import play.api.libs.json.Json
+
+import java.util.UUID
 
 object ExampleRoutes {
   implicit object autoSchema extends AutoSchema with DocumentedTypeMappings
 
-  private val Find    = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
-                        Path(Segment[String]) & GET &
-                        Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
+  private val Find = Category("Api", "Resource") & Title("Find") & Description("Returns specified resource entrie") &
+    Path(Segment[String]) & GET &
+    Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
   private val FindAll = Category("Api", "Resource") & Title("Find All") & Description("Returns all resource entries") &
-                        GET &
-                        Out[Set[ExampleResource]]
+    GET &
+    Out[Set[ExampleResource]]
 
-  private val Create  = Category("Api", "Resource") & Title("Create") & Description("Creates a new resource entry") &
-                        POST &
-                        In(CreateExample) & Out[ExampleResource]
-  
-  private val Update  = Category("Api", "Resource") & Title("Update") & Description("Updates specified resource entry") &
-                        Path(Segment[String]) & PUT &
-                        In(UpdateExample) & Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
-  
-  private val Delete  = Category("Api", "Resource") & Title("Delete") & Description("Deletes specified resource entry") &
-                        Path(Segment[String]) & DELETE &
-                        Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
+  private val Create = Category("Api", "Resource") & Title("Create") & Description("Creates a new resource entry") &
+    POST &
+    In(CreateExample) & Out[ExampleResource]
+
+  private val Update = Category("Api", "Resource") & Title("Update") & Description("Updates specified resource entry") &
+    Path(Segment[String]) & PUT &
+    In(UpdateExample) & Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
+
+  private val Delete = Category("Api", "Resource") & Title("Delete") & Description("Deletes specified resource entry") &
+    Path(Segment[String]) & DELETE &
+    Out[ExampleResource] & Out(StatusCodes.NotFound, "Resource not found")
 
   lazy val route: DRoute = PathPrefix("resources") {
-    Find    {find} |~|
-    FindAll {complete(collection)} |~|
-    Create  {create} |~|
-    Update  {update} |~|
-    Delete  {delete}
+    Find { find } |~|
+      FindAll { complete(collection) } |~|
+      Create { create } |~|
+      Update { update } |~|
+      Delete { delete }
   }
 
-  import akka.http.scaladsl.server.Route
   import akka.http.scaladsl.server.Directives._
+  import akka.http.scaladsl.server.Route
 
-  private def find(id: String): Route = rejectEmptyResponse {complete(collection get id)}
+  private def find(id: String): Route = rejectEmptyResponse { complete(collection get id) }
   private def create(payload: CreateResource): Route = {
     val resource = new ExampleResource(
       id = UUID.randomUUID().toString,
       name = payload.name,
-      description = payload.description)
+      description = payload.description,
+    )
     collection += resource.id -> resource
     complete(StatusCodes.Created -> resource)
   }
@@ -58,7 +59,8 @@ object ExampleRoutes {
       val _description = payload.description getOrElse resource.description
       val updated = resource.copy(
         name = _name,
-        description = _description)
+        description = _description,
+      )
       collection += id -> updated
       updated
     }
@@ -67,7 +69,7 @@ object ExampleRoutes {
   private def delete(id: String): Route = {
     collection get id match {
       case Some(resource) => complete(resource)
-      case None           => complete(StatusCodes.NotFound)
+      case None => complete(StatusCodes.NotFound)
     }
   }
 

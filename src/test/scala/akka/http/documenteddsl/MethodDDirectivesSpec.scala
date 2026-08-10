@@ -13,14 +13,14 @@ class MethodDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with Scalat
       m.describe(RouteDocumentation()).method mustBe Some(m.toString)
     }
     "be counted during request handling" in {
-      val route = m {complete("ok")}
-      Get()     ~> route ~> check {handled must be (m == GET)}
-      Post()    ~> route ~> check {handled must be (m == POST)}
-      Delete()  ~> route ~> check {handled must be (m == DELETE)}
-      Put()     ~> route ~> check {handled must be (m == PUT)}
-      Head()    ~> route ~> check {handled must be (m == HEAD)}
-      Options() ~> route ~> check {handled must be (m == OPTIONS)}
-      Patch()   ~> route ~> check {handled must be (m == PATCH)}
+      val route = m { complete("ok") }
+      Get() ~> route ~> check { handled must be(m == GET) }
+      Post() ~> route ~> check { handled must be(m == POST) }
+      Delete() ~> route ~> check { handled must be(m == DELETE) }
+      Put() ~> route ~> check { handled must be(m == PUT) }
+      Head() ~> route ~> check { handled must be(m == HEAD) }
+      Options() ~> route ~> check { handled must be(m == OPTIONS) }
+      Patch() ~> route ~> check { handled must be(m == PATCH) }
     }
   }
 

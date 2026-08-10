@@ -1,13 +1,13 @@
 package akka.http.documenteddsl
 
-import java.time.LocalDate
-
 import DDirectives._
 import akka.http.documenteddsl.documentation.{InDocumentation, JsonSchema, RouteDocumentation}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json._
+
+import java.time.LocalDate
 
 class MarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
   import MarshallingDDirectivesSpec._
@@ -20,16 +20,18 @@ class MarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with S
       In[TestIn].describe(RouteDocumentation()).in mustBe Some(InDocumentation(
         contentType = "application/json",
         schema = JsonSchema.resolveSchema[TestIn],
-        example = None))
+        example = None,
+      ))
     }
     "be applied to route documentation (with example)" in {
       In(TestIn("in", Some("name"), now)).describe(RouteDocumentation()).in mustBe Some(InDocumentation(
         contentType = "application/json",
         schema = JsonSchema.resolveSchema[TestIn],
-        example = Some(Json toJson TestIn("in", Some("name"), now))))
+        example = Some(Json toJson TestIn("in", Some("name"), now)),
+      ))
     }
     "be counted during request processing" in {
-      val route = In[TestIn] apply {x => complete(x)}
+      val route = In[TestIn] apply { x => complete(x) }
       Post("/", TestIn("id", Some("name"), now)) ~> route ~> check {
         handled mustBe true
         responseAs[TestIn] mustBe TestIn("id", Some("name"), now)
@@ -38,17 +40,17 @@ class MarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with S
     "be preprocessed" in {
       implicit val sanitize = new Preprocess[JsValue] {
         def transform(json: JsValue): JsValue = json match {
-          case JsString(x)    => JsString(11.toString + x)
-          case JsNumber(x)    => JsNumber(11 + x)
-          case arr: JsArray   => JsArray(arr.value map transform)
-          case obj: JsObject  => JsObject(obj.fields map {case (k, v) => (k, transform(v))})
-          case x              => x
+          case JsString(x) => JsString(11.toString + x)
+          case JsNumber(x) => JsNumber(11 + x)
+          case arr: JsArray => JsArray(arr.value map transform)
+          case obj: JsObject => JsObject(obj.fields map { case (k, v) => (k, transform(v)) })
+          case x => x
         }
 
         override def apply(x: JsValue): JsValue = transform(x)
       }
 
-      val route = In[AnotherTestIn] apply {x => complete(x)}
+      val route = In[AnotherTestIn] apply { x => complete(x) }
       Post("/", AnotherTestIn("id", Some("name"), 16)) ~> route ~> check {
         handled mustBe true
         responseAs[AnotherTestIn] mustBe AnotherTestIn("11id", Some("11name"), 27)

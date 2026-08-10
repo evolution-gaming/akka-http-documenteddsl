@@ -14,7 +14,11 @@ trait HeaderDDirectives {
   sealed trait Header[T] extends DDirective1[T]
 
   case class HeaderByName(name: String, acceptedValues: String*) extends Header[String] {
-    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = {
+    def describe(
+      w: RouteDocumentation,
+    )(implicit
+      as: AutoSchema,
+    ): RouteDocumentation = {
       w.header(name, required = true, constraints = if (acceptedValues.isEmpty) None else Some(acceptedValues.toSet))
     }
     def delegate: Directive1[String] = {
@@ -22,8 +26,15 @@ trait HeaderDDirectives {
     }
   }
 
-  case class HeaderByType[T <: HttpHeader]()(implicit ct: ClassTag[T]) extends Header[T] {
-    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = {
+  case class HeaderByType[T <: HttpHeader](
+  )(implicit
+    ct: ClassTag[T],
+  ) extends Header[T] {
+    def describe(
+      w: RouteDocumentation,
+    )(implicit
+      as: AutoSchema,
+    ): RouteDocumentation = {
       w.header(ModeledCompanion.nameFromClass(ct.runtimeClass), required = true, constraints = None)
     }
     def delegate: Directive1[T] = {
@@ -32,17 +43,22 @@ trait HeaderDDirectives {
   }
 
   object Header {
-    def apply(name: String, acceptedValues: String*): Header[String]  = HeaderByName(name, acceptedValues:_*)
-    def apply(s: Symbol, acceptedValues: String*): Header[String]     = HeaderByName(s.name, acceptedValues:_*)
+    def apply(name: String, acceptedValues: String*): Header[String] = HeaderByName(name, acceptedValues: _*)
+    def apply(s: Symbol, acceptedValues: String*): Header[String] = HeaderByName(s.name, acceptedValues: _*)
     def apply[T <: HttpHeader: ClassTag]: Header[T] = HeaderByType[T]()
   }
 
   case class OptHeader(name: String, acceptedValues: String*) extends DDirective1[Option[String]] {
-    def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = {
+    def describe(
+      w: RouteDocumentation,
+    )(implicit
+      as: AutoSchema,
+    ): RouteDocumentation = {
       w.header(name, required = false, constraints = if (acceptedValues.isEmpty) None else Some(acceptedValues.toSet))
     }
     def delegate: Directive1[Option[String]] = {
-      if (acceptedValues.isEmpty) optionalHeaderValueByName(name) else {
+      if (acceptedValues.isEmpty) optionalHeaderValueByName(name)
+      else {
         def accepted(headerValue: Option[String]): Boolean = headerValue match {
           case None => true
           case Some(headerValue) => acceptedValues contains headerValue
@@ -53,8 +69,8 @@ trait HeaderDDirectives {
   }
 
   object OptHeader {
-    def apply(s: Symbol, acceptedValues: String*): OptHeader = OptHeader(s.name, acceptedValues:_*)
-    def apply[T](s: ModeledCompanion[T], acceptedValues: String*): OptHeader = OptHeader(s.name, acceptedValues:_*)
+    def apply(s: Symbol, acceptedValues: String*): OptHeader = OptHeader(s.name, acceptedValues: _*)
+    def apply[T](s: ModeledCompanion[T], acceptedValues: String*): OptHeader = OptHeader(s.name, acceptedValues: _*)
   }
 
 }

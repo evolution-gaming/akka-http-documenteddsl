@@ -1,11 +1,10 @@
 package akka.http.documenteddsl.directives
 
-import java.time.LocalDate
-import java.util.UUID
-
 import akka.http.documenteddsl.documentation.DocumentedTypeMappings
 import akka.http.scaladsl.server.{PathMatcher, PathMatcher1, PathMatchers}
 
+import java.time.LocalDate
+import java.util.UUID
 import scala.util.Try
 import scala.util.matching.Regex
 
@@ -37,23 +36,24 @@ object PathSegmentType {
 
   implicit object BooleanSegment extends PathSegmentType[Boolean] {
     private val values = Map(
-      "true"  -> true,
+      "true" -> true,
       "false" -> false,
-      "TRUE"  -> true,
+      "TRUE" -> true,
       "FALSE" -> false,
-      "yes"   -> true,
-      "no"    -> false,
-      "YES"   -> true,
-      "NO"    -> false,
-      "1"     -> true,
-      "0"     -> false
+      "yes" -> true,
+      "no" -> false,
+      "YES" -> true,
+      "NO" -> false,
+      "1" -> true,
+      "0" -> false,
     )
     override def fromString: PathMatcher1[Boolean] = PathMatchers.Segment flatMap values.get
   }
 
   implicit object LocalDateSegment extends PathSegmentType[LocalDate] {
-    override def fromString: PathMatcher1[LocalDate] = PathMatcher(DocumentedTypeMappings.localDatePattern.r) flatMap { str =>
-      Try(LocalDate.parse(str)).toOption
+    override def fromString: PathMatcher1[LocalDate] = PathMatcher(DocumentedTypeMappings.localDatePattern.r) flatMap {
+      str =>
+        Try(LocalDate.parse(str)).toOption
     }
   }
 
@@ -62,10 +62,13 @@ object PathSegmentType {
   }
 
   private class FromFunctionPathSegmentType[T](f: String => T) extends PathSegmentType[T] {
-    override def fromString: PathMatcher1[T] = PathMatchers.Segment flatMap {x => Try(f(x)).toOption}
+    override def fromString: PathMatcher1[T] = PathMatchers.Segment flatMap { x => Try(f(x)).toOption }
   }
 
-  implicit def function2pathSegmentType[T](implicit f: String => T): PathSegmentType[T] = {
+  implicit def function2pathSegmentType[T](
+    implicit
+    f: String => T,
+  ): PathSegmentType[T] = {
     new FromFunctionPathSegmentType[T](f)
   }
 

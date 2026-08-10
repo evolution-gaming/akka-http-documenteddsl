@@ -18,9 +18,10 @@ object PathDocumentation {
   case class NonEmpty(
     prefix: Option[String] = None,
     path: Option[String] = None,
-    suffix: Option[String] = None) extends PathDocumentation {
+    suffix: Option[String] = None,
+  ) extends PathDocumentation {
 
-    private def prepend(p: Option[String], pre: String) = Some(p.fold(pre) {pre + "/" + _})
+    private def prepend(p: Option[String], pre: String) = Some(p.fold(pre) { pre + "/" + _ })
 
     def withPrefix(prefix: String): PathDocumentation = copy(prefix = prepend(this.prefix, prefix))
     def withPath(path: String): PathDocumentation = copy(path = prepend(this.path, path))
