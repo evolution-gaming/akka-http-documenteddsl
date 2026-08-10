@@ -1,14 +1,14 @@
-import sbt._
-import sbt.Keys._
-import sbt.Defaults._
-import BuildSettings._
-import Dependencies._
-import Examples._
+import BuildSettings.*
+import Dependencies.*
+import Examples.*
+import sbt.*
+import sbt.Defaults.*
+import sbt.Keys.*
 
-val alias: Seq[sbt.Def.Setting[_]] =
+val alias: Seq[sbt.Def.Setting[?]] =
   //  addCommandAlias("check", "all versionPolicyCheck Compile/doc") ++
   addCommandAlias("check", "show version") ++
-    addCommandAlias("build", "+all compile test")
+    addCommandAlias("build", "+all compile testFull")
 
 lazy val project = (Project(artifactId, file("."))
   .configs(ExamplesConfig)
