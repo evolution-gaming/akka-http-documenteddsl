@@ -1,7 +1,5 @@
 package akka.http.documenteddsl
 
-import java.time.LocalDate
-
 import akka.http.documenteddsl.directives.UnmarshallingDDirectives._
 import akka.http.documenteddsl.documentation.OutDocumentation._
 import akka.http.documenteddsl.documentation.{JsonSchema, OutDocumentation, RouteDocumentation}
@@ -10,6 +8,8 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.matchers.must.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{Format, Json}
+
+import java.time.LocalDate
 
 class UnmarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with ScalatestRouteTest {
   import UnmarshallingDDirectivesSpec._
@@ -24,22 +24,31 @@ class UnmarshallingDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with
             status = Status(StatusCodes.OK),
             contentType = "application/json",
             schema = JsonSchema.resolveSchema[TestOut],
-            example = None))))
+            example = None,
+          ),
+        ),
+      ))
     }
     "be applied to route documentation (concatenated)" in {
-      val out = Out(StatusCodes.Created, TestOut("id", Some("name"), now)) & Out(StatusCodes.NotFound, "entity not found")
+      val out = Out(StatusCodes.Created, TestOut("id", Some("name"), now)) &
+        Out(StatusCodes.NotFound, "entity not found")
       out.describe(RouteDocumentation()).out mustBe Some(OutDocumentation(
         failure = List(
           Payload.Failure(
             status = Status(StatusCodes.NotFound),
             contentType = None,
-            description = Some("entity not found"))),
+            description = Some("entity not found"),
+          ),
+        ),
         success = List(
           Payload.Success(
             status = Status(StatusCodes.Created),
             contentType = "application/json",
             schema = JsonSchema.resolveSchema[TestOut],
-            example = Some(Json toJson TestOut("id", Some("name"), now))))))
+            example = Some(Json toJson TestOut("id", Some("name"), now)),
+          ),
+        ),
+      ))
     }
   }
 

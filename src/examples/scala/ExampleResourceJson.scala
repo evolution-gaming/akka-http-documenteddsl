@@ -14,10 +14,10 @@ object ExampleResourceJson {
       for {
         name <- (json \ "name").validateOpt[String]
         description <- (json \ "description").asOpt[JsValue] match {
-          case Some(JsString(x))  => JsSuccess(Some(Some(x)))
-          case Some(JsNull)       => JsSuccess(Some(None))
-          case None               => JsSuccess(None)
-          case Some(_)            => JsError()
+          case Some(JsString(x)) => JsSuccess(Some(Some(x)))
+          case Some(JsNull) => JsSuccess(Some(None))
+          case None => JsSuccess(None)
+          case Some(_) => JsError()
         }
       } yield UpdateResource(name, description)
     }
@@ -25,9 +25,9 @@ object ExampleResourceJson {
 
       val _name = o.name map (name => Json.obj("name" -> name)) getOrElse Json.obj()
       val _description = o.description match {
-        case Some(Some(x))  => Json.obj("description" -> x)
-        case Some(None)     => Json.obj("description" -> JsNull)
-        case None           => Json.obj()
+        case Some(Some(x)) => Json.obj("description" -> x)
+        case Some(None) => Json.obj("description" -> JsNull)
+        case None => Json.obj()
       }
 
       Json.obj() ++ _name ++ _description

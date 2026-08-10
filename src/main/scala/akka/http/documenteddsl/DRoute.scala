@@ -7,7 +7,8 @@ import scala.concurrent.Future
 
 class DRoute(
   underlying: Route,
-  writer: Documentation => Documentation = identity) extends Route {
+  writer: Documentation => Documentation = identity,
+) extends Route {
 
   def selfDescribe(doc: Documentation): Documentation = writer apply doc
   override def apply(ctx: RequestContext): Future[RouteResult] = underlying apply ctx

@@ -11,21 +11,39 @@ import akka.stream.scaladsl.Flow
 import org.coursera.autoschema.AutoSchema
 
 trait DDirective[L] { self =>
-  def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation
+  def describe(
+    w: RouteDocumentation,
+  )(implicit
+    as: AutoSchema,
+  ): RouteDocumentation
   def &(magnet: DConjunctionMagnet[L]): magnet.Out = magnet(this)
   def delegate: Directive[L]
-  def map[R](f: L => R)(implicit tupler: Tupler[R], as: AutoSchema): DDirective[tupler.Out] = new DDirectiveDelegate(
+  def map[R](
+    f: L => R,
+  )(implicit
+    tupler: Tupler[R],
+    as: AutoSchema,
+  ): DDirective[tupler.Out] = new DDirectiveDelegate(
     dir = (delegate tmap f).asInstanceOf[Directive[tupler.Out]],
-    writer = self.describe
+    writer = self.describe,
   )
-  def flatMap[R: Tuple](f: L => Directive[R])(implicit as: AutoSchema): DDirective[R] = new DDirectiveDelegate(
+  def flatMap[R: Tuple](
+    f: L => Directive[R],
+  )(implicit
+    as: AutoSchema,
+  ): DDirective[R] = new DDirectiveDelegate(
     dir = delegate tflatMap f,
-    writer = self.describe
+    writer = self.describe,
   )
 }
 
-class DDirectiveDelegate[L](dir: Directive[L], writer: RouteDocumentation => RouteDocumentation = identity) extends DDirective[L] {
-  override def describe(doc: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = writer(doc)
+class DDirectiveDelegate[L](dir: Directive[L], writer: RouteDocumentation => RouteDocumentation = identity)
+extends DDirective[L] {
+  override def describe(
+    doc: RouteDocumentation,
+  )(implicit
+    as: AutoSchema,
+  ): RouteDocumentation = writer(doc)
   override def delegate: Directive[L] = dir
 }
 
@@ -34,46 +52,67 @@ object DDirective {
   val Empty: DDirective0 = new DDirectiveDelegate(Directive.Empty)
 
   /**
-    * Constructs a directive from a function literal.
-    */
+   * Constructs a directive from a function literal.
+   */
   def apply[T: Tuple](
     f: (T => Route) => Route,
-    writer: RouteDocumentation => RouteDocumentation = identity
+    writer: RouteDocumentation => RouteDocumentation = identity,
   ): DDirective[T] = new DDirectiveDelegate(Directive(f), writer)
 
-
-  private def writer[L](innerRoute: DRoute, d: DDirective[L])(doc: Documentation)(implicit as: AutoSchema): Documentation = {
+  private def writer[L](
+    innerRoute: DRoute,
+    d: DDirective[L],
+  )(
+    doc: Documentation,
+  )(implicit
+    as: AutoSchema,
+  ): Documentation = {
     val innerDoc = innerRoute selfDescribe Documentation()
-    val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe else {
+    val outerDoc = if (innerDoc.routes.isEmpty) doc withRoute d.describe
+    else {
       Documentation(routes = innerDoc.routes map d.describe)
     }
     outerDoc
   }
 
   /**
-    * Adds `apply` to all Directives with 1 or more extractions,
-    * which allows specifying an n-ary function to receive the extractions instead of a Function1[TupleX, Route].
-    */
-  implicit def addDirectiveApply[L](d: DDirective[L])(implicit hac: ApplyConverter[L], as: AutoSchema): hac.In => DRoute =
-    f => new DRoute(
-        underlying  = d.delegate tapply hac(f),
-        writer      = _ withRoute d.describe)
-
+   * Adds `apply` to all Directives with 1 or more extractions, which allows specifying an n-ary
+   * function to receive the extractions instead of a Function1[TupleX, Route].
+   */
+  implicit def addDirectiveApply[L](
+    d: DDirective[L],
+  )(implicit
+    hac: ApplyConverter[L],
+    as: AutoSchema,
+  ): hac.In => DRoute =
+    f =>
+      new DRoute(
+        underlying = d.delegate tapply hac(f),
+        writer = _ withRoute d.describe,
+      )
 
   /**
-    * Adds `apply` to Directive0. Note: The `apply` parameter is call-by-name to ensure consistent execution behavior
-    * with the directives producing extractions.
-    */
-  implicit def addByNameNullaryApply(d: DDirective0)(implicit as: AutoSchema): (=> DRoute) => DRoute = {
-    r => new DRoute(
-      underlying  = d.delegate tapply { _ => r },
-      writer      = writer(r, d))
+   * Adds `apply` to Directive0. Note: The `apply` parameter is call-by-name to ensure consistent
+   * execution behavior with the directives producing extractions.
+   */
+  implicit def addByNameNullaryApply(
+    d: DDirective0,
+  )(implicit
+    as: AutoSchema,
+  ): (=> DRoute) => DRoute = {
+    r =>
+      new DRoute(
+        underlying = d.delegate tapply { _ => r },
+        writer = writer(r, d),
+      )
   }
 
-  implicit def documentedRoute2HandlerFlow(route: DRoute)(implicit
+  implicit def documentedRoute2HandlerFlow(
+    route: DRoute,
+  )(implicit
     actorSystem: ActorSystem,
   ): Flow[HttpRequest, HttpResponse, NotUsed] =
-      Route.toFlow(route)
+    Route.toFlow(route)
 
 }
 
@@ -84,24 +123,33 @@ trait DConjunctionMagnet[L] {
 
 object DConjunctionMagnet {
 
-  implicit def fromDirective[L, R]
-    (other: DDirective[R])
-    (implicit join: TupleOps.Join[L, R]): DConjunctionMagnet[L] { type Out = DDirective[join.Out] } = {
+  implicit def fromDirective[L, R](
+    other: DDirective[R],
+  )(implicit
+    join: TupleOps.Join[L, R],
+  ): DConjunctionMagnet[L] { type Out = DDirective[join.Out] } = {
 
     new DConjunctionMagnet[L] {
       type Out = DDirective[join.Out]
 
       def apply(underlying: DDirective[L]) =
         new DDirective[join.Out]() {
-          def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = underlying.describe(other.describe(w))
-          override def delegate: Directive[join.Out] = (underlying.delegate & other.delegate).asInstanceOf[Directive[join.Out]]
+          def describe(
+            w: RouteDocumentation,
+          )(implicit
+            as: AutoSchema,
+          ): RouteDocumentation = underlying.describe(other.describe(w))
+          override def delegate
+            : Directive[join.Out] = (underlying.delegate & other.delegate).asInstanceOf[Directive[join.Out]]
         }
     }
   }
 
-  implicit def fromStandardDirective[L, R]
-    (other: Directive[R])
-    (implicit join: TupleOps.Join[L, R]): DConjunctionMagnet[L] { type Out = DDirective[join.Out] } = {
+  implicit def fromStandardDirective[L, R](
+    other: Directive[R],
+  )(implicit
+    join: TupleOps.Join[L, R],
+  ): DConjunctionMagnet[L] { type Out = DDirective[join.Out] } = {
 
     val _other: DDirectiveDelegate[R] = new DDirectiveDelegate(other)
 
@@ -110,14 +158,18 @@ object DConjunctionMagnet {
 
       def apply(underlying: DDirective[L]) =
         new DDirective[join.Out]() {
-          def describe(w: RouteDocumentation)(implicit as: AutoSchema): RouteDocumentation = underlying.describe(_other.describe(w))
-          override def delegate: Directive[join.Out] = (underlying.delegate & _other.delegate).asInstanceOf[Directive[join.Out]]
+          def describe(
+            w: RouteDocumentation,
+          )(implicit
+            as: AutoSchema,
+          ): RouteDocumentation = underlying.describe(_other.describe(w))
+          override def delegate
+            : Directive[join.Out] = (underlying.delegate & _other.delegate).asInstanceOf[Directive[join.Out]]
         }
     }
   }
 
-  implicit def fromStandardRoute[L]
-    (route: StandardRoute): DConjunctionMagnet[L] { type Out = StandardRoute } = {
+  implicit def fromStandardRoute[L](route: StandardRoute): DConjunctionMagnet[L] { type Out = StandardRoute } = {
 
     new DConjunctionMagnet[L] {
       type Out = StandardRoute
@@ -126,8 +178,8 @@ object DConjunctionMagnet {
     }
   }
 
-  implicit def fromRouteGenerator[T, R <: Route]
-    (generator: T => R): DConjunctionMagnet[Unit] { type Out = RouteGenerator[T] } = {
+  implicit def fromRouteGenerator[T, R <: Route](generator: T => R)
+    : DConjunctionMagnet[Unit] { type Out = RouteGenerator[T] } = {
 
     new DConjunctionMagnet[Unit] {
       type Out = RouteGenerator[T]

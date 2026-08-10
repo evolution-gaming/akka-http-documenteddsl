@@ -14,19 +14,20 @@ class ParameterDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with Sca
         name = "xxx",
         schema = JsonSchema.string,
         required = true,
-        origin = ParamDocumentation.Origin.Query)))
+        origin = ParamDocumentation.Origin.Query,
+      )))
     }
     "be counted during request processing" in {
-      val route = Param[String]("xxx") apply {x => complete(s"$x")}
-      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
+      val route = Param[String]("xxx") apply { x => complete(s"$x") }
+      Get("/?xxx=zzz") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "zzz" }
     }
 
     "be preprocessed" in {
       implicit val preprocess = new Preprocess[String] {
         override def apply(x: String): String = 11.toString + x
       }
-      val route = Param[String]("xxx") apply {x => complete(s"$x")}
-      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "11zzz"}
+      val route = Param[String]("xxx") apply { x => complete(s"$x") }
+      Get("/?xxx=zzz") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "11zzz" }
     }
   }
 
@@ -36,27 +37,29 @@ class ParameterDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with Sca
         name = "xxx",
         schema = JsonSchema.string,
         required = false,
-        origin = ParamDocumentation.Origin.Query)))
+        origin = ParamDocumentation.Origin.Query,
+      )))
     }
     "be counted during request processing" in {
-      val route = OptParam[String]("xxx") apply {x => complete(s"$x")}
-      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "Some(zzz)"}
-      Get("/") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "None"}
+      val route = OptParam[String]("xxx") apply { x => complete(s"$x") }
+      Get("/?xxx=zzz") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "Some(zzz)" }
+      Get("/") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "None" }
     }
   }
 
   "DefaultParam" must {
     "be applied to route documentation" in {
-      DefaultParam[String]("xxx","aaa").describe(RouteDocumentation()).parameters mustBe Some(List(ParamDocumentation(
+      DefaultParam[String]("xxx", "aaa").describe(RouteDocumentation()).parameters mustBe Some(List(ParamDocumentation(
         name = "xxx",
         schema = JsonSchema.string,
         required = false,
-        origin = ParamDocumentation.Origin.Query)))
+        origin = ParamDocumentation.Origin.Query,
+      )))
     }
     "be counted during request processing" in {
-      val route = DefaultParam[String]("xxx","aaa") apply {x => complete(s"$x")}
-      Get("/?xxx=zzz") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
-      Get("/") ~> route ~> check {handled mustBe true; responseAs[String] mustBe "aaa"}
+      val route = DefaultParam[String]("xxx", "aaa") apply { x => complete(s"$x") }
+      Get("/?xxx=zzz") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "zzz" }
+      Get("/") ~> route ~> check { handled mustBe true; responseAs[String] mustBe "aaa" }
     }
   }
 

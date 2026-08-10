@@ -15,20 +15,21 @@ class FormFieldDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with Sca
         name = "xxx",
         schema = JsonSchema.string,
         required = true,
-        origin = ParamDocumentation.Origin.Form)))
+        origin = ParamDocumentation.Origin.Form,
+      )))
     }
     "be counted during request processing" in {
-      val route = FormField[String]("xxx") apply {x => complete(s"$x")}
+      val route = FormField[String]("xxx") apply { x => complete(s"$x") }
       val formData = FormData("xxx" -> "zzz")
-      Post("/", formData) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
+      Post("/", formData) ~> route ~> check { handled mustBe true; responseAs[String] mustBe "zzz" }
     }
     "be preprocessed" in {
       implicit val preprocess = new Preprocess[String] {
         override def apply(x: String): String = 11.toString + x
       }
-      val route = FormField[String]("xxx") apply {x => complete(s"$x")}
+      val route = FormField[String]("xxx") apply { x => complete(s"$x") }
       val formData = FormData("xxx" -> "zzz")
-      Post("/", formData) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "11zzz"}
+      Post("/", formData) ~> route ~> check { handled mustBe true; responseAs[String] mustBe "11zzz" }
     }
   }
 
@@ -38,27 +39,32 @@ class FormFieldDDirectivesSpec extends AnyWordSpec with DDirectivesSpec with Sca
         name = "xxx",
         schema = JsonSchema.string,
         required = false,
-        origin = ParamDocumentation.Origin.Form)))
+        origin = ParamDocumentation.Origin.Form,
+      )))
     }
     "be counted during request processing" in {
-      val route = OptFormField[String]("xxx") apply {x => complete(s"$x")}
-      Post("/", FormData("xxx" -> "zzz")) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "Some(zzz)"}
-      Post("/", FormData()) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "None"}
+      val route = OptFormField[String]("xxx") apply { x => complete(s"$x") }
+      Post("/", FormData("xxx" -> "zzz")) ~> route ~> check {
+        handled mustBe true; responseAs[String] mustBe "Some(zzz)"
+      }
+      Post("/", FormData()) ~> route ~> check { handled mustBe true; responseAs[String] mustBe "None" }
     }
   }
 
   "DefaultFormField" must {
     "be applied to route documentation" in {
-      DefaultFormField[String]("xxx", "aaa").describe(RouteDocumentation()).parameters mustBe Some(List(ParamDocumentation(
-        name = "xxx",
-        schema = JsonSchema.string,
-        required = false,
-        origin = ParamDocumentation.Origin.Form)))
+      DefaultFormField[String]("xxx", "aaa").describe(RouteDocumentation()).parameters mustBe
+        Some(List(ParamDocumentation(
+          name = "xxx",
+          schema = JsonSchema.string,
+          required = false,
+          origin = ParamDocumentation.Origin.Form,
+        )))
     }
     "be counted during request processing" in {
-      val route = DefaultFormField[String]("xxx", "aaa") apply {x => complete(s"$x")}
-      Post("/", FormData("xxx" -> "zzz")) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "zzz"}
-      Post("/", FormData()) ~> route ~> check {handled mustBe true; responseAs[String] mustBe "aaa"}
+      val route = DefaultFormField[String]("xxx", "aaa") apply { x => complete(s"$x") }
+      Post("/", FormData("xxx" -> "zzz")) ~> route ~> check { handled mustBe true; responseAs[String] mustBe "zzz" }
+      Post("/", FormData()) ~> route ~> check { handled mustBe true; responseAs[String] mustBe "aaa" }
     }
   }
 

@@ -7,21 +7,22 @@ import sbt.Keys.*
 
 val alias: Seq[sbt.Def.Setting[?]] =
   //  addCommandAlias("check", "all versionPolicyCheck Compile/doc") ++
-  addCommandAlias("check", "show version") ++
+  addCommandAlias("check", "+scalafmtCheckRepo") ++
+    addCommandAlias("fmt", "+all scalafmtRepo") ++
     addCommandAlias("build", "+all compile testFull")
 
-lazy val project = (Project(artifactId, file("."))
+lazy val project = Project(artifactId, file("."))
   .configs(ExamplesConfig)
-  .settings (
+  .settings(
     inConfig(ExamplesConfig)(compileBase ++ compileSettings ++ Seq(
-      run := Defaults.runTask(ExamplesConfig / fullClasspath , run / mainClass , run / runner).evaluated,
-      runMain := Defaults.runMainTask(ExamplesConfig / fullClasspath, run / runner).evaluated)
-    ),
+      run := Defaults.runTask(ExamplesConfig / fullClasspath, run / mainClass, run / runner).evaluated,
+      runMain := Defaults.runMainTask(ExamplesConfig / fullClasspath, run / runner).evaluated,
+    )),
   )
   .settings(alias)
   .settings(basicSettings)
   .settings(
-    publishTo := Some(Resolver.evolutionReleases)
+    publishTo := Some(Resolver.evolutionReleases),
   )
   .settings(Seq(
     libraryDependencies ++= Seq(
@@ -33,5 +34,6 @@ lazy val project = (Project(artifactId, file("."))
       akkaStreamTestkit,
       jsonSchema,
       scalaTest,
-      mockito))),
-  )
+      mockito,
+    ),
+  ))
