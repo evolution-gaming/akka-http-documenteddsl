@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  test:
+    uses: evolution-gaming/scala-github-actions/.github/workflows/ci.yml@dde27b9bd793d41d5aacf8fb74403c9de5da1146 # v6.3.0
+    with:
+      scala_versions: '["2.13.18"]'
+      # TODO no sbt-version-policy in this repo, so binary compatibility was never checked
+      version_policy_check: false
