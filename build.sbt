@@ -6,9 +6,8 @@ import sbt.Defaults.*
 import sbt.Keys.*
 
 val alias: Seq[sbt.Def.Setting[?]] =
-  //  addCommandAlias("check", "all versionPolicyCheck Compile/doc") ++
-  addCommandAlias("check", "+scalafmtCheckRepo") ++
-    addCommandAlias("fmt", "+all scalafmtRepo") ++
+  addCommandAlias("check", "all scalafmtCheckRepo versionPolicyCheck Compile/doc") ++
+    addCommandAlias("fmt", "scalafmtRepo") ++
     addCommandAlias("build", "+all compile testFull")
 
 lazy val project = Project(artifactId, file("."))
