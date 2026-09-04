@@ -16,7 +16,7 @@ object BuildSettings {
     organizationName := "Evolution",
     organizationHomepage := Some(uri("https://evolution.com")),
     scalaVersion := crossScalaVersions.value.head,
-    crossScalaVersions := Seq("2.13.18"),
+    crossScalaVersions := Seq("3.9.0"),
     publishTo := Some(Resolver.evolutionReleases),
     licenses := Seq(License("Apache-2.0", uri("http://www.apache.org/licenses/LICENSE-2.0"))),
     versionPolicyIntention := Compatibility.BinaryCompatible,
