@@ -12,7 +12,7 @@ object Dependencies {
   val jsonSchema = "com.evolutiongaming" %% "autoschema" % "2.0.0"
 
   val PekkoHttpVersion = "1.4.0"
-  val PekkoVersion = "1.6.0"
+  val PekkoVersion = "1.7.0"
   val pekkoHttpCore = "org.apache.pekko" %% "pekko-http-core" % PekkoHttpVersion
   val pekkoHttp = "org.apache.pekko" %% "pekko-http" % PekkoHttpVersion
   val pekkoHttpTestKit = "org.apache.pekko" %% "pekko-http-testkit" % PekkoHttpVersion % Test
