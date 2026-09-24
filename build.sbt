@@ -23,9 +23,10 @@ lazy val root = Project("root", file("."))
   )
 
 /**
- * The `pekko-http-documenteddsl` module doesn't have their own sources! 
- * The sources are generated from `akka` module's `src`s by rewriting `akka` imports to `org.apache.pekko` using [[PekkoPort]].
- * 
+ * The `pekko-http-documenteddsl` module doesn't have their own sources! The sources are generated
+ * from `akka` module's `src`s by rewriting `akka` imports to `org.apache.pekko` using
+ * [[PekkoPort]].
+ *
  * Do not edit the generated sources in `pekko-http-documenteddsl` module!
  */
 lazy val `http-documenteddsl` = projectMatrix
@@ -63,10 +64,14 @@ lazy val `http-documenteddsl` = projectMatrix
       Compile / unmanagedSourceDirectories -= (Compile / scalaSource).value,
       Test / unmanagedSourceDirectories -= (Test / scalaSource).value,
       Compile / sourceGenerators += Def.task {
-        PekkoPort.port((Compile / scalaSource).value, (Compile / sourceManaged).value)
+        PekkoPort.port(
+          (ThisBuild / baseDirectory).value,
+          (Compile / scalaSource).value,
+          (Compile / sourceManaged).value,
+        )
       }.taskValue,
       Test / sourceGenerators += Def.task {
-        PekkoPort.port((Test / scalaSource).value, (Test / sourceManaged).value)
+        PekkoPort.port((ThisBuild / baseDirectory).value, (Test / scalaSource).value, (Test / sourceManaged).value)
       }.taskValue,
       libraryDependencies ++= Seq(
         pekkoHttpCore,
