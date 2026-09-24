@@ -23,8 +23,10 @@ lazy val root = Project("root", file("."))
   )
 
 /**
- * `akka-http-documenteddsl` and `pekko-http-documenteddsl`. The pekko row compiles `src` with
- * `akka` rewritten to `org.apache.pekko` by [[PekkoPort]]. Edit `src`, never the generated tree.
+ * The `pekko-http-documenteddsl` module doesn't have their own sources! 
+ * The sources are generated from `akka` module's `src`s by rewriting `akka` imports to `org.apache.pekko` using [[PekkoPort]].
+ * 
+ * Do not edit the generated sources in `pekko-http-documenteddsl` module!
  */
 lazy val `http-documenteddsl` = projectMatrix
   .in(file("."))
