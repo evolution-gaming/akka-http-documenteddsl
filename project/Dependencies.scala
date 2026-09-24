@@ -11,7 +11,7 @@ object Dependencies {
   val akkaHttpPlayJson = "com.evolutiongaming" %% "akka-http-play-json" % "0.3.0"
   val jsonSchema = "com.evolutiongaming" %% "autoschema" % "2.0.0"
 
-  val PekkoHttpVersion = "1.3.0"
+  val PekkoHttpVersion = "1.4.0"
   val PekkoVersion = "1.6.0"
   val pekkoHttpCore = "org.apache.pekko" %% "pekko-http-core" % PekkoHttpVersion
   val pekkoHttp = "org.apache.pekko" %% "pekko-http" % PekkoHttpVersion
