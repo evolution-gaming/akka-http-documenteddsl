@@ -21,5 +21,5 @@ object Dependencies {
   val pekkoHttpPlayJson = "com.evolutiongaming" %% "pekko-http-play-json" % "0.3.0"
 
   val scalaTest = "org.scalatest" %% "scalatest" % "3.2.20" % Test
-  val mockito = "org.mockito" % "mockito-core" % "5.23.0" % Test
+  val mockito = "org.mockito" % "mockito-core" % "5.24.0" % Test
 }
