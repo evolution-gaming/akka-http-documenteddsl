@@ -6,17 +6,14 @@ import sbt.Keys.*
 import sbtversionpolicy.SbtVersionPolicyPlugin.autoImport.*
 
 object BuildSettings {
-  val artifactId = "akka-http-documenteddsl"
+  val scalaVersions: Seq[String] = Seq("2.13.18")
 
   lazy val basicSettings = Seq(
-    name := artifactId,
     organization := "com.evolutiongaming",
     homepage := Some(uri("https://github.com/evolution-gaming/akka-http-documenteddsl")),
     startYear := Some(2016),
     organizationName := "Evolution",
     organizationHomepage := Some(uri("https://evolution.com")),
-    scalaVersion := crossScalaVersions.value.head,
-    crossScalaVersions := Seq("2.13.18"),
     publishTo := Some(Resolver.evolutionReleases),
     licenses := Seq(License("Apache-2.0", uri("http://www.apache.org/licenses/LICENSE-2.0"))),
     versionPolicyIntention := Compatibility.BinaryCompatible,

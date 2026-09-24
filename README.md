@@ -223,3 +223,11 @@ GET http://localhost:8080/api.json/14906C3B8B40240130BFA42E
 resolvers += "evolution" at "https://evolution.jfrog.io/artifactory/public"
 libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "0.4.0"
 ```
+
+## Pekko
+`pekko-http-documenteddsl` is published from this repo too. Its sources are generated from `src` by
+`project/PekkoPort.scala`, which rewrites `akka.` to `org.apache.pekko.`. Change the akka sources, the
+pekko ones follow.
+```scala
+libraryDependencies += "com.evolutiongaming" %% "pekko-http-documenteddsl" % "<version>"
+```

@@ -10,6 +10,16 @@ object Dependencies {
   val akkaStreamTestkit = "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test
   val akkaHttpPlayJson = "com.evolutiongaming" %% "akka-http-play-json" % "0.3.0"
   val jsonSchema = "com.evolutiongaming" %% "autoschema" % "2.0.0"
+
+  val PekkoHttpVersion = "1.3.0"
+  val PekkoVersion = "1.6.0"
+  val pekkoHttpCore = "org.apache.pekko" %% "pekko-http-core" % PekkoHttpVersion
+  val pekkoHttp = "org.apache.pekko" %% "pekko-http" % PekkoHttpVersion
+  val pekkoHttpTestKit = "org.apache.pekko" %% "pekko-http-testkit" % PekkoHttpVersion % Test
+  val pekkoStream = "org.apache.pekko" %% "pekko-stream" % PekkoVersion
+  val pekkoStreamTestkit = "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test
+  val pekkoHttpPlayJson = "com.evolutiongaming" %% "pekko-http-play-json" % "0.3.0"
+
   val scalaTest = "org.scalatest" %% "scalatest" % "3.2.20" % Test
   val mockito = "org.mockito" % "mockito-core" % "5.23.0" % Test
 }
