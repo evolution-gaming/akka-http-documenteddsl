@@ -32,7 +32,7 @@ lazy val root = Project("root", file("."))
 lazy val `http-documenteddsl` = projectMatrix
   .in(file("."))
   .settings(basicSettings)
-  .settings(libraryDependencies ++= Seq(jsonSchema, scalaTest, mockito))
+  .settings(libraryDependencies ++= Seq(jsonSchema, jacksonCore, jacksonDatabind, scalaTest, mockito))
   .defaultAxes(VirtualAxis.jvm, VirtualAxis.scalaABIVersion(BuildSettings.scalaVersions.head))
   .customRow(
     scalaVersions = BuildSettings.scalaVersions,
