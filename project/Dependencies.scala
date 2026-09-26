@@ -20,7 +20,7 @@ object Dependencies {
   val pekkoStreamTestkit = "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test
   val pekkoHttpPlayJson = "com.evolutiongaming" %% "pekko-http-play-json" % "0.3.0"
 
-  val JacksonVersion = "2.18.11"
+  val JacksonVersion = "2.22.3"
   val jacksonCore = "com.fasterxml.jackson.core" % "jackson-core" % JacksonVersion
   val jacksonDatabind = "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion
 
