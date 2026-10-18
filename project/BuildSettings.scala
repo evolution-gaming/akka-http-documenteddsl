@@ -6,7 +6,7 @@ import sbt.Keys.*
 import sbtversionpolicy.SbtVersionPolicyPlugin.autoImport.*
 
 object BuildSettings {
-  val scalaVersions: Seq[String] = Seq("2.13.18")
+  val scalaVersions: Seq[String] = Seq("3.10.0")
 
   lazy val basicSettings = Seq(
     organization := "com.evolutiongaming",
