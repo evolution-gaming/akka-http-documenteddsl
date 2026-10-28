@@ -16,6 +16,6 @@ object BuildSettings {
     organizationHomepage := Some(uri("https://evolution.com")),
     publishTo := Some(Resolver.evolutionReleases),
     licenses := Seq(License("Apache-2.0", uri("http://www.apache.org/licenses/LICENSE-2.0"))),
-    versionPolicyIntention := Compatibility.None,
+    versionPolicyIntention := Compatibility.BinaryCompatible,
   )
 }
