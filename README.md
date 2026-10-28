@@ -221,7 +221,7 @@ GET http://localhost:8080/api.json/14906C3B8B40240130BFA42E
 **Sbt**
 ```scala
 resolvers += "evolution" at "https://evolution.jfrog.io/artifactory/public"
-libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "0.4.0"
+libraryDependencies += "com.evolutiongaming" %% "akka-http-documenteddsl" % "<version>"
 ```
 
 ## Pekko
