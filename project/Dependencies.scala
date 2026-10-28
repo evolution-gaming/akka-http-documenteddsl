@@ -8,7 +8,7 @@ object Dependencies {
   val akkaHttpTestKit = "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % Test
   val akkaStream = "com.typesafe.akka" %% "akka-stream" % AkkaVersion
   val akkaStreamTestkit = "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test
-  val akkaHttpPlayJson = "com.evolutiongaming" %% "akka-http-play-json" % "0.3.0"
+  val akkaHttpPlayJson = "com.evolutiongaming" %% "akka-http-play-json" % "0.4.0"
   val jsonSchema = "com.evolutiongaming" %% "autoschema" % "2.0.0"
 
   val PekkoHttpVersion = "1.4.2"
@@ -18,7 +18,7 @@ object Dependencies {
   val pekkoHttpTestKit = "org.apache.pekko" %% "pekko-http-testkit" % PekkoHttpVersion % Test
   val pekkoStream = "org.apache.pekko" %% "pekko-stream" % PekkoVersion
   val pekkoStreamTestkit = "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test
-  val pekkoHttpPlayJson = "com.evolutiongaming" %% "pekko-http-play-json" % "0.3.0"
+  val pekkoHttpPlayJson = "com.evolutiongaming" %% "pekko-http-play-json" % "0.4.0"
 
   val JacksonVersion = "2.22.4"
   val jacksonCore = "com.fasterxml.jackson.core" % "jackson-core" % JacksonVersion
