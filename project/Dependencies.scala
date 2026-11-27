@@ -25,5 +25,5 @@ object Dependencies {
   val jacksonDatabind = "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion
 
   val scalaTest = "org.scalatest" %% "scalatest" % "3.2.20" % Test
-  val mockito = "org.mockito" % "mockito-core" % "5.24.0" % Test
+  val mockito = "org.mockito" % "mockito-core" % "5.25.0" % Test
 }
